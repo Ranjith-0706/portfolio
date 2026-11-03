@@ -107,21 +107,40 @@
     renderer.setSize(innerWidth, innerHeight);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x07070c, 0.055);
+    scene.fog = new THREE.FogExp2(0x0f1216, 0.055);
     const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 100);
     camera.position.z = 8;
 
-    const colA = new THREE.Color(0x7c5cff), colB = new THREE.Color(0x00e5ff), colC = new THREE.Color(0xff4ecd);
+    const narrowInit = () => innerWidth < 720;
+    const colA = new THREE.Color(0x8296ab), colB = new THREE.Color(0xff6b47), colC = new THREE.Color(0xff9170);
 
     const hero = new THREE.Group();
     scene.add(hero);
 
-    const knotMat = new THREE.MeshBasicMaterial({ color: colA, wireframe: true, transparent: true, opacity: 0.55 });
-    const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.6, 0.46, 220, 28, 2, 3), knotMat);
+    // AI "neural orb": nodes on a sphere joined by nearby-neighbour links
+    const sphereNodes = (n, r, jitter) => {
+      const out = [], ga = Math.PI * (3 - Math.sqrt(5));
+      for (let i = 0; i < n; i++) {
+        const y = 1 - (i / (n - 1)) * 2, rr = Math.sqrt(1 - y * y), th = ga * i;
+        const k = r * (1 + (Math.random() - 0.5) * jitter);
+        out.push(new THREE.Vector3(Math.cos(th) * rr * k, y * k, Math.sin(th) * rr * k));
+      }
+      return out;
+    };
+    const nodesOuter = sphereNodes(narrowInit() ? 90 : 150, 2.1, 0.18);
+    const linkPts = [];
+    for (let i = 0; i < nodesOuter.length; i++)
+      for (let j = i + 1; j < nodesOuter.length; j++)
+        if (nodesOuter[i].distanceTo(nodesOuter[j]) < (narrowInit() ? 1.2 : 0.95))
+          linkPts.push(nodesOuter[i], nodesOuter[j]);
+    const knotMat = new THREE.LineBasicMaterial({ color: colA, transparent: true, opacity: 0.5 });
+    const knot = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(linkPts), knotMat);
+    const nodeMat = new THREE.PointsMaterial({ color: colB, size: 0.09, transparent: true, opacity: 0.95, sizeAttenuation: true });
+    knot.add(new THREE.Points(new THREE.BufferGeometry().setFromPoints(nodesOuter), nodeMat));
     hero.add(knot);
 
-    const coreMat = new THREE.MeshBasicMaterial({ color: colB, wireframe: true, transparent: true, opacity: 0.35 });
-    const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.75, 1), coreMat);
+    const coreMat = new THREE.PointsMaterial({ color: colC, size: 0.07, transparent: true, opacity: 0.8, sizeAttenuation: true });
+    const core = new THREE.Points(new THREE.BufferGeometry().setFromPoints(sphereNodes(60, 1.05, 0.25)), coreMat);
     hero.add(core);
 
     const ringMat = new THREE.MeshBasicMaterial({ color: colC, transparent: true, opacity: 0.4 });
@@ -178,18 +197,18 @@
       ring1.rotation.z = t * 0.7; ring2.rotation.x = -t * 0.5;
       hero.rotation.x += (scene3d.my * 0.35 - hero.rotation.x) * 0.05;
 
-      // colour shift with scroll: violet -> cyan -> magenta
+      // colour shift with scroll: steel -> coral -> soft coral
       const k = (p * 2) % 2;
       if (k < 1) tmp.copy(colA).lerp(colB, k); else tmp.copy(colB).lerp(colC, k - 1);
       knotMat.color.copy(tmp);
-      knotMat.opacity = 0.55 - Math.min(p * 3, 0.3);
-      coreMat.opacity = 0.35 - Math.min(p * 2, 0.2);
+      knotMat.opacity = 0.5 - Math.min(p * 3, 0.28);
+      coreMat.opacity = 0.8 - Math.min(p * 2, 0.4);
 
       points.rotation.y = t * 0.12 + p * 1.5;
       points.rotation.x = p * 0.8;
       camera.position.x += (scene3d.mx * 0.7 - camera.position.x) * 0.04;
       camera.position.y += (-scene3d.my * 0.5 - camera.position.y) * 0.04;
-      camera.position.z = 8 - p * 3.5;
+      camera.position.z = 8 - p * 1.2;
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
