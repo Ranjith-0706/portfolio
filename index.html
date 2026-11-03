@@ -3,354 +3,239 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ranjith | Full Stack Web Developer</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
-    rel="stylesheet"
-  />
+  <title>Ranjith P | Full-Stack Developer</title>
+  <meta name="description" content="Ranjith P — Full-Stack Web Developer building scalable FastAPI backends and React/Next.js frontends with AI-assisted workflows." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
+  <!-- LOADER -->
+  <div id="loader">
+    <div class="loader-count"><span id="loader-num">0</span><small>%</small></div>
+    <div class="loader-label">Booting portfolio…</div>
+    <div class="loader-bar"><i id="loader-bar"></i></div>
+  </div>
+
+  <!-- FX -->
+  <canvas id="bg"></canvas>
+  <div class="grain"></div>
+  <div class="progress"><i id="progress"></i></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"><span></span></div>
+
   <!-- NAV -->
   <nav>
-    <span class="logo">Ranjith<span>.</span></span>
+    <a href="#hero" class="logo" data-cursor>RP<span>/</span></a>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about" data-cursor>About</a></li>
+      <li><a href="#skills" data-cursor>Skills</a></li>
+      <li><a href="#projects" data-cursor>Work</a></li>
+      <li><a href="#experience" data-cursor>Journey</a></li>
+      <li><a href="#contact" data-cursor class="nav-cta">Let's talk</a></li>
     </ul>
   </nav>
 
-  <!-- HERO -->
-  <div id="hero">
-    <div class="hero-left">
-      <p class="hero-eyebrow">Full Stack Web Developer</p>
-      <h1 class="hero-name">Crafting <em>ideas</em> into web reality.</h1>
-      <p class="hero-desc">
-        I build end-to-end web applications, adapt to new technologies as they emerge,
-        and use AI tools to ship better products faster.
-      </p>
-      <div class="hero-btns">
-        <a href="#projects" class="btn btn-primary">See My Work</a>
-        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+  <main>
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-inner">
+        <p class="eyebrow mono"><i class="pulse"></i> Available for new opportunities</p>
+        <h1 class="hero-title">
+          <span class="line" data-split>Ranjith</span>
+          <span class="line outline" data-split>Palani.</span>
+        </h1>
+        <p class="hero-role mono">
+          Full-Stack Developer <b>/</b> <span id="typed"></span><i class="caret"></i>
+        </p>
+        <p class="hero-desc">
+          I build scalable backends and complete web applications with Python, FastAPI and React/Next.js —
+          using AI-assisted workflows to ship full-stack systems faster, from database schema to UI.
+        </p>
+        <div class="hero-btns">
+          <a href="#projects" class="btn btn-primary magnetic" data-cursor><span>See my work</span><em>↓</em></a>
+          <a href="#contact" class="btn btn-ghost magnetic" data-cursor><span>Get in touch</span></a>
+        </div>
+      </div>
+      <div class="hero-meta mono">
+        <div><small>Based in</small>Tamil Nadu, India</div>
+        <div><small>Now</small>Software Engineer @ ZionX</div>
+        <div class="scroll-hint"><i></i>Scroll</div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track" id="marquee">
+        <span>Python</span><b>✦</b><span class="o">FastAPI</span><b>✦</b><span>React</span><b>✦</b><span class="o">Next.js</span><b>✦</b>
+        <span>Docker</span><b>✦</b><span class="o">PostgreSQL</span><b>✦</b><span>MongoDB</span><b>✦</b><span class="o">Redis</span><b>✦</b>
+        <span>CI/CD</span><b>✦</b><span class="o">n8n</span><b>✦</b><span>AWS</span><b>✦</b><span class="o">Linux</span><b>✦</b>
+        <span>Python</span><b>✦</b><span class="o">FastAPI</span><b>✦</b><span>React</span><b>✦</b><span class="o">Next.js</span><b>✦</b>
+        <span>Docker</span><b>✦</b><span class="o">PostgreSQL</span><b>✦</b><span>MongoDB</span><b>✦</b><span class="o">Redis</span><b>✦</b>
+        <span>CI/CD</span><b>✦</b><span class="o">n8n</span><b>✦</b><span>AWS</span><b>✦</b><span class="o">Linux</span><b>✦</b>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="hero-card">
-        <div class="hero-avatar">
-          <!-- To use a real photo: replace the div below with <img src="assets/photo.jpg" alt="Ranjith P." /> -->
-          <div class="hero-avatar-initial">R</div>
-        </div>
-        <h3>Ranjith P.</h3>
-        <p>Based in Tamil Nadu, India</p>
-        <div class="hero-card-tags">
-          <span class="hero-ctag">Python</span>
-          <span class="hero-ctag">FastAPI</span>
-          <span class="hero-ctag">React</span>
-          <span class="hero-ctag">Next.js</span>
-          <span class="hero-ctag">Docker</span>
-          <span class="hero-ctag">AI Tools</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- MARQUEE TICKER -->
-  <div class="marquee-strip">
-    <div class="marquee-track">
-      <!-- First copy -->
-      <span class="marquee-item">Python <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">FastAPI <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">React <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Next.js <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">PostgreSQL <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">MongoDB <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Docker <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Redis <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Nginx <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">CI/CD <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">n8n Automation <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">OpenCV <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Linux <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">SQLAlchemy <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Tailwind CSS <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">GitHub Actions <span class="marquee-dot">✦</span></span>
-      <!-- Duplicate for seamless loop -->
-      <span class="marquee-item">Python <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">FastAPI <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">React <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Next.js <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">PostgreSQL <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">MongoDB <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Docker <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Redis <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Nginx <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">CI/CD <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">n8n Automation <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">OpenCV <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Linux <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">SQLAlchemy <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">Tailwind CSS <span class="marquee-dot">✦</span></span>
-      <span class="marquee-item">GitHub Actions <span class="marquee-dot">✦</span></span>
-    </div>
-  </div>
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="wrap">
+        <div class="sec-head reveal"><span class="mono">01</span><h2>About</h2><i></i></div>
+        <div class="about-grid">
+          <div class="about-text">
+            <p class="big reveal">
+              Results-driven full-stack developer turning ideas into <em>fast, scalable, production-ready</em> systems.
+            </p>
+            <p class="reveal">Hands-on experience building scalable backend services and complete web applications using Python, FastAPI and React/Next.js.</p>
+            <p class="reveal">Skilled in AI-assisted full-stack development — designing, building and shipping frontend and backend systems faster, from database schema to UI.</p>
+            <p class="reveal">I work across RESTful API design, responsive frontend integration, Linux server administration, Docker deployments and CI/CD automation, with a focus on clean code, performance and documentation.</p>
+          </div>
+          <div class="stats">
+            <div class="stat tilt reveal"><div class="num"><span data-count="4">0</span>+</div><div class="lbl">Full-stack apps delivered</div></div>
+            <div class="stat tilt reveal"><div class="num"><span data-count="40">0</span>%</div><div class="lbl">Faster APIs via Redis / Celery</div></div>
+            <div class="stat tilt reveal"><div class="num"><span data-count="60">0</span>%</div><div class="lbl">Less manual deploy effort</div></div>
+            <div class="stat tilt reveal"><div class="num"><span data-count="30">0</span>+</div><div class="lbl">REST endpoints built</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="section-inner">
-      <div class="section-header reveal">
-        <span class="section-num">01</span>
-        <h2 class="section-title">About Me</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="about-grid reveal">
-        <div class="about-text">
-          <p>I'm a Full Stack Web Developer who loves building end-to-end web applications — from solid backends to clean, responsive frontends.</p>
-          <p>I'm always picking up new technologies and frameworks as the web evolves. Whatever the stack demands, I adapt and build with it.</p>
-          <p>I also leverage AI tools to accelerate development — from generating boilerplate to solving complex problems faster — so I can ship better products in less time.</p>
-          <p>M.Sc. IT graduate from SRM University, driven by curiosity and a love for crafting things that actually work.</p>
-        </div>
-        <div class="about-facts">
-          <div class="fact">
-            <div class="fact-label">Education</div>
-            <div class="fact-value">M.Sc. IT — SRM University</div>
-          </div>
-          <div class="fact">
-            <div class="fact-label">Location</div>
-            <div class="fact-value">Tamil Nadu, India</div>
-          </div>
-          <div class="fact">
-            <div class="fact-label">Projects Shipped</div>
-            <div class="fact-value">3+ Production Projects</div>
-          </div>
-          <div class="fact">
-            <div class="fact-label">Approach</div>
-            <div class="fact-value">AI-assisted, human-crafted</div>
-          </div>
-          <div class="fact">
-            <div class="fact-label">Status</div>
-            <div class="fact-value">Open to Opportunities ✦</div>
-          </div>
+    <!-- SKILLS -->
+    <section id="skills" class="section">
+      <div class="wrap">
+        <div class="sec-head reveal"><span class="mono">02</span><h2>Toolkit</h2><i></i></div>
+        <div class="skills-grid">
+          <article class="skill tilt reveal"><h3>Full-Stack Dev</h3><div><span>AI-Assisted Development</span><span>Rapid Prototyping</span><span>End-to-End Delivery</span></div></article>
+          <article class="skill tilt reveal"><h3>Frontend</h3><div><span>React</span><span>Next.js</span><span>JavaScript</span><span>Responsive UI/UX</span><span>REST Integration</span></div></article>
+          <article class="skill tilt reveal"><h3>Backend</h3><div><span>Python</span><span>FastAPI</span><span>asyncio</span><span>Node.js</span><span>Go</span><span>REST API Design</span></div></article>
+          <article class="skill tilt reveal"><h3>Databases</h3><div><span>PostgreSQL</span><span>MongoDB</span><span>Redis</span></div></article>
+          <article class="skill tilt reveal"><h3>DevOps</h3><div><span>Docker</span><span>GitHub Actions</span><span>Linux (Ubuntu)</span><span>Nginx</span><span>Git / GitHub</span><span>AWS</span></div></article>
+          <article class="skill tilt reveal"><h3>Automation</h3><div><span>n8n Workflows</span><span>Shell Scripting</span><span>Scheduled Pipelines</span></div></article>
+          <article class="skill tilt reveal"><h3>Web Development</h3><div><span>WordPress</span><span>PHP</span><span>Shopify</span><span>3D Web Designs</span><span>Landing Pages</span></div></article>
+          <article class="skill tilt reveal"><h3>QA &amp; Testing</h3><div><span>Postman / pytest</span><span>Test Automation</span><span>Regression</span><span>Defect Tracking</span></div></article>
+          <article class="skill tilt reveal"><h3>Engineering</h3><div><span>System Design</span><span>OOP</span><span>Data Modeling</span><span>Code Reviews</span><span>Agile / Scrum</span></div></article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-inner">
-      <div class="section-header reveal">
-        <span class="section-num">02</span>
-        <h2 class="section-title">Skills</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="skills-grid reveal">
-        <div class="skill-group">
-          <div class="skill-group-title">Backend &amp; APIs</div>
-          <div class="skill-list">
-            <span class="skill-item">Python</span>
-            <span class="skill-item">FastAPI</span>
-            <span class="skill-item">SQLAlchemy</span>
-            <span class="skill-item">Celery</span>
-            <span class="skill-item">JWT / RBAC</span>
-          </div>
+    <!-- PROJECTS (horizontal pinned scroll) -->
+    <section id="projects" class="h-section">
+      <div class="h-pin">
+        <div class="h-head wrap">
+          <div class="sec-head"><span class="mono">03</span><h2>Selected Work</h2><i></i></div>
+          <p class="mono h-hint">Scroll →</p>
         </div>
-        <div class="skill-group">
-          <div class="skill-group-title">Frontend</div>
-          <div class="skill-list">
-            <span class="skill-item">React</span>
-            <span class="skill-item">Next.js</span>
-            <span class="skill-item">JavaScript</span>
-            <span class="skill-item">Tailwind CSS</span>
-            <span class="skill-item">App Router</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <div class="skill-group-title">Databases</div>
-          <div class="skill-list">
-            <span class="skill-item">PostgreSQL</span>
-            <span class="skill-item">MongoDB</span>
-            <span class="skill-item">Redis</span>
-            <span class="skill-item">Alembic</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <div class="skill-group-title">DevOps</div>
-          <div class="skill-list">
-            <span class="skill-item">Docker</span>
-            <span class="skill-item">Nginx</span>
-            <span class="skill-item">Linux</span>
-            <span class="skill-item">CI/CD (GitHub Actions)</span>
-            <span class="skill-item">n8n Automation</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <div class="skill-group-title">Tools</div>
-          <div class="skill-list">
-            <span class="skill-item">Git &amp; GitHub</span>
-            <span class="skill-item">Postman</span>
-            <span class="skill-item">Claude Code CLI</span>
-            <span class="skill-item">SEO / Core Web Vitals</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+        <div class="h-track" id="h-track">
 
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="section-inner">
-      <div class="section-header reveal">
-        <span class="section-num">03</span>
-        <h2 class="section-title">Projects</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="projects-list reveal">
+          <article class="card tilt">
+            <div class="card-num">01</div>
+            <div class="card-visual v1"><i></i><i></i><i></i></div>
+            <h3>CCTV Attendance<br />Management</h3>
+            <p>Automated attendance via CCTV face recognition, with role-based access and exportable HR dashboards.</p>
+            <div class="tags"><span>Python</span><span>FastAPI</span><span>PostgreSQL</span><span>Redis</span><span>React/Next.js</span><span>Docker</span><span>n8n</span></div>
+          </article>
 
-        <div class="project-row">
-          <div class="project-num">01</div>
-          <div class="project-body">
-            <h3>Hospital ERP System</h3>
-            <p>A production-ready, single-tenant hospital management platform covering patient records, billing, appointments, and role-based access — deployed on-premise with Docker and Nginx.</p>
-            <div class="project-body-tags">
-              <span class="ptag">FastAPI</span>
-              <span class="ptag">PostgreSQL</span>
-              <span class="ptag">Next.js</span>
-              <span class="ptag">Docker</span>
-              <span class="ptag">RBAC</span>
+          <article class="card tilt">
+            <div class="card-num">02</div>
+            <div class="card-visual v2"><i></i><i></i><i></i></div>
+            <h3>Distance Learning<br />Platform</h3>
+            <p>E-learning platform with 30+ REST endpoints, user/course management, and async processing.</p>
+            <div class="tags"><span>FastAPI</span><span>MongoDB</span><span>Redis</span><span>Celery</span><span>React/Next.js</span></div>
+          </article>
+
+          <article class="card tilt">
+            <div class="card-num">03</div>
+            <div class="card-visual v3"><i></i><i></i><i></i></div>
+            <h3>Property Maintenance<br />System</h3>
+            <p>Property, work-order and technician management with admin/technician dashboards; ~40% faster APIs via Redis caching.</p>
+            <div class="tags"><span>FastAPI</span><span>MongoDB</span><span>Redis</span><span>Celery</span><span>React/Next.js</span></div>
+          </article>
+
+          <article class="card tilt">
+            <div class="card-num">04</div>
+            <div class="card-visual v4"><i></i><i></i><i></i></div>
+            <h3>Hospital ERP<br /><small>Personal project</small></h3>
+            <p>On-premise Hospital ERP with a full Docker Compose stack, JWT/RBAC auth, SQLAlchemy models and Alembic migrations.</p>
+            <div class="tags"><span>FastAPI</span><span>Next.js</span><span>PostgreSQL</span><span>Redis</span><span>MinIO</span><span>Celery</span><span>Docker</span><span>Nginx</span></div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section">
+      <div class="wrap">
+        <div class="sec-head reveal"><span class="mono">04</span><h2>Journey</h2><i></i></div>
+        <div class="timeline" id="timeline">
+          <div class="tl-line"><i id="tl-fill"></i></div>
+
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card tilt">
+              <div class="tl-period mono">Jun 2026 — Present</div>
+              <h3>Software Engineer</h3>
+              <div class="tl-co">ZionX Engineering and AI Delivery</div>
+              <p>Build and ship full-stack features with Python/FastAPI backends and React/Next.js frontends using AI-assisted development workflows. Containerize services with Docker and maintain GitHub Actions CI/CD pipelines. Write API tests (Postman/pytest) and contribute to code reviews, sprint planning and documentation in an Agile team.</p>
             </div>
           </div>
-          <div class="project-arrow">→</div>
-        </div>
 
-        <div class="project-row">
-          <div class="project-num">02</div>
-          <div class="project-body">
-            <h3>Face Recognition Attendance</h3>
-            <p>A CCTV-based automated attendance system using deep learning for face detection and recognition, integrated with a FastAPI backend and real-time dashboards.</p>
-            <div class="project-body-tags">
-              <span class="ptag">Python</span>
-              <span class="ptag">OpenCV</span>
-              <span class="ptag">DeepFace</span>
-              <span class="ptag">FastAPI</span>
-              <span class="ptag">Redis</span>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card tilt">
+              <div class="tl-period mono">Sep 2025 — Jun 2026</div>
+              <h3>Associate Software Engineer</h3>
+              <div class="tl-co">Inaisys Solutions Pvt. Ltd., Kanchipuram</div>
+              <p>Built a full-stack CCTV-based Attendance Management app (FastAPI + React/Next.js) with real-time face recognition, role-based dashboards and reporting. Managed Linux (Ubuntu) servers — Nginx, Docker, monitoring and security hardening. Automated deployments with GitHub Actions and shell scripts (~60% less manual effort); built n8n workflows for business process automation.</p>
             </div>
           </div>
-          <div class="project-arrow">→</div>
-        </div>
 
-        <div class="project-row">
-          <div class="project-num">03</div>
-          <div class="project-body">
-            <h3>ShopAPI — E-commerce REST API</h3>
-            <p>A fully-featured e-commerce backend with product management, cart, orders, authentication, and async MongoDB queries — built as a GitHub portfolio showcase.</p>
-            <div class="project-body-tags">
-              <span class="ptag">FastAPI</span>
-              <span class="ptag">MongoDB</span>
-              <span class="ptag">Motor</span>
-              <span class="ptag">JWT</span>
-              <span class="ptag">Docker</span>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card tilt">
+              <div class="tl-period mono">May 2024 — May 2025</div>
+              <h3>Software Engineer Trainee</h3>
+              <div class="tl-co">Gitim.ai Solutions Pvt. Ltd., Bangalore</div>
+              <p>Developed full-stack applications for a distance learning platform and a property maintenance management system. Built 30+ RESTful API endpoints and designed MongoDB schemas for users, courses and properties. Integrated Redis caching and Celery async task queues, improving API response times by ~40%.</p>
             </div>
           </div>
-          <div class="project-arrow">→</div>
-        </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- EXPERIENCE -->
-  <section id="experience">
-    <div class="section-inner">
-      <div class="section-header reveal">
-        <span class="section-num">04</span>
-        <h2 class="section-title">Experience</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="exp-list reveal">
-
-        <div class="exp-item">
-          <div class="exp-left">
-            <div class="exp-period">Sep 2025 – Jun 2026</div>
-            <div class="exp-company">Inaisys Solutions Pvt. Ltd.</div>
-            <div class="exp-type">Full-time</div>
-          </div>
-          <div class="exp-right">
-            <h3>Software Developer</h3>
-            <p>Built and maintained multiple production systems including Hospital ERP, CCTV-based face recognition attendance, property maintenance, and distance learning platforms. Integrated generative AI features and managed CI/CD pipelines, Docker deployments, and Nginx configuration.</p>
-            <div class="exp-tags">
-              <span class="etag">Python</span>
-              <span class="etag">FastAPI</span>
-              <span class="etag">MongoDB</span>
-              <span class="etag">Redis</span>
-              <span class="etag">Docker</span>
-              <span class="etag">Nginx</span>
-              <span class="etag">n8n</span>
-              <span class="etag">CI/CD</span>
+          <div class="tl-item">
+            <div class="tl-dot edu"></div>
+            <div class="tl-card tilt">
+              <div class="tl-period mono">2022 — 2024</div>
+              <h3>M.Sc. Information Technology</h3>
+              <div class="tl-co">SRM Institute of Science and Technology · CGPA 8.29</div>
+              <p>Earlier: BCA (2019 – 2022), Sri Chandrasekharendra Saraswathi Viswa Mahavidyalaya — CGPA 8.80.</p>
             </div>
           </div>
         </div>
-
-        <div class="exp-item">
-          <div class="exp-left">
-            <div class="exp-period">Apr 2024 – Mar 2025</div>
-            <div class="exp-company">Gitim.ai Solutions Pvt. Ltd.</div>
-            <div class="exp-type">Trainee</div>
-          </div>
-          <div class="exp-right">
-            <h3>Software Development Trainee</h3>
-            <p>Kickstarted my professional journey in Bengaluru, gaining hands-on experience in backend and full-stack development, working on AI-assisted product development and learning production-grade engineering practices.</p>
-            <div class="exp-tags">
-              <span class="etag">Python</span>
-              <span class="etag">React</span>
-              <span class="etag">FastAPI</span>
-              <span class="etag">AI Integration</span>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="section-inner">
-      <div class="section-header">
-        <span class="section-num" style="color:var(--accent2);">05</span>
-        <h2 class="section-title" style="color:var(--cream);">Contact</h2>
-        <div class="section-line" style="background:rgba(255,255,255,0.1);"></div>
-      </div>
-      <div class="contact-body">
-        <div class="contact-left">
-          <p>Have a project in mind, a role to discuss, or just want to say hello? <em>I'd love to hear from you.</em></p>
-          <div class="contact-links">
-            <a href="mailto:ranjithpalani16@gmail.com" class="contact-link">
-              <span class="clink-icon">✉</span> ranjithpalani16@gmail.com
-            </a>
-            <a href="https://www.linkedin.com/in/ranjith-p-6a9756226" target="_blank" rel="noopener noreferrer" class="contact-link">
-              <span class="clink-icon">in</span> linkedin.com/in/ranjith-p-6a9756226
-            </a>
-            <a href="https://github.com/Ranjith-0706" target="_blank" rel="noopener noreferrer" class="contact-link">
-              <span class="clink-icon">gh</span> github.com/Ranjith-0706
-            </a>
-          </div>
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="wrap">
+        <p class="mono reveal contact-kicker">05 — Contact</p>
+        <h2 class="contact-title reveal">Let's build<br /><span class="grad">something</span><br />great.</h2>
+        <div class="contact-row reveal">
+          <a href="mailto:ranjithpalani16@gmail.com" class="btn btn-primary big magnetic" data-cursor><span>ranjithpalani16@gmail.com</span><em>↗</em></a>
         </div>
-        <div class="contact-right">
-          <div class="big-text">Let's<br />work<br />together.</div>
-          <div class="contact-cta">
-            <a href="mailto:ranjithpalani16@gmail.com" class="btn-light">Say Hello →</a>
-          </div>
+        <div class="socials mono reveal">
+          <a href="https://github.com/Ranjith-0706" target="_blank" rel="noopener noreferrer" data-cursor>GitHub ↗</a>
+          <a href="https://www.linkedin.com/in/ranjith-p-6a9756226" target="_blank" rel="noopener noreferrer" data-cursor>LinkedIn ↗</a>
+          <a href="tel:+919159999776" data-cursor>+91 91599 99776</a>
         </div>
       </div>
-    </div>
-  </section>
+      <footer class="mono">© 2026 Ranjith P · Tamil Nadu, India · Built with Three.js &amp; GSAP</footer>
+    </section>
+  </main>
 
-  <footer>RANJITH P. &nbsp;·&nbsp; TAMIL NADU, INDIA &nbsp;·&nbsp; 2026</footer>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
+  <script>setTimeout(function(){var l=document.getElementById('loader');if(l)l.style.display='none';},7000);</script>
 </body>
 </html>
