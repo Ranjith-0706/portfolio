@@ -265,7 +265,7 @@ footer{margin-top:clamp(70px,10vw,140px);padding:26px 20px;border-top:1px solid 
 /* ---------- AI sidekick ---------- */
 .bot{position:fixed;right:clamp(12px,2vw,28px);bottom:clamp(12px,2vw,28px);z-index:60;width:clamp(78px,7vw,112px);opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s;cursor:pointer;-webkit-tap-highlight-color:transparent;outline:none}
 .bot.on{opacity:1;transform:none}
-.bot img{width:100%;height:auto;display:block;pointer-events:none;-webkit-user-drag:none;filter:drop-shadow(0 12px 22px rgba(0,0,0,.65))}
+.bot img{width:100%;height:auto;display:block;pointer-events:none;-webkit-user-drag:none;-webkit-mask-image:radial-gradient(closest-side,#000 68%,transparent 100%);mask-image:radial-gradient(closest-side,#000 68%,transparent 100%)}
 .bot-float{animation:botbob 4s ease-in-out infinite}
 @keyframes botbob{50%{transform:translateY(-6px)}}
 .bot-body{position:relative;transform-style:preserve-3d}
@@ -418,13 +418,13 @@ footer{margin-top:clamp(70px,10vw,140px);padding:26px 20px;border-top:1px solid 
 
 /* ---------- Journey: sticky scroll-spy ---------- */
 .jr{display:grid;grid-template-columns:minmax(260px,.85fr) 1.7fr;gap:clamp(30px,5vw,90px);align-items:start}
-.jr-side{position:sticky;top:22vh;align-self:start;min-width:0}
+.jr-side{position:sticky;top:18vh;align-self:start;min-width:0;padding:clamp(20px,2.4vw,32px);border:1px solid var(--line);border-radius:22px;background:rgba(15,18,22,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .jr-panes{display:grid}
 .jr-pane{grid-area:1/1;opacity:0;transform:translateY(18px);filter:blur(6px);transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1),filter .5s;pointer-events:none}
 .jr-pane.is-on{opacity:1;transform:none;filter:none}
-.jr-year{display:flex;flex-direction:column;gap:4px;margin-bottom:18px}
+.jr-year{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
 .jr-year b{font-family:var(--f-display);font-weight:800;font-size:clamp(64px,8vw,120px);line-height:.9;letter-spacing:-.05em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.jr-year small{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.jr-year small{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,3.6vw,52px);line-height:1;letter-spacing:-.03em;text-transform:none;color:var(--fg)}
 .jr-role{font-family:var(--f-display);font-weight:700;font-size:clamp(20px,2vw,28px);letter-spacing:-.02em;line-height:1.15}
 .jr-co{margin-top:8px;color:var(--mut);font-size:15px;max-width:34ch}
 .jr-steps{list-style:none;display:flex;flex-direction:column;gap:2px;margin-top:clamp(24px,4vw,44px);padding-left:0}

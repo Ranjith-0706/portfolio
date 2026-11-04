@@ -700,10 +700,26 @@
       jrSteps.forEach((s, k) => s.classList.toggle('is-on', k === i));
       jrItems.forEach((it, k) => it.classList.toggle('is-active', k === i));
     };
-    jrItems.forEach((it, i) => ScrollTrigger.create({
-      trigger: it, start: 'top 60%', end: 'bottom 60%',
-      onToggle: s => { if (s.isActive) setActive(i); }
-    }));
+    // Pick the card whose centre is nearest the middle of the viewport. Reads live
+    // positions on scroll, so it stays correct however the pinned section above shifts layout.
+    let jrCur = -1, jrRaf = 0;
+    const pickActive = () => {
+      jrRaf = 0;
+      const mid = innerHeight * 0.55;
+      const first = jrItems[0].getBoundingClientRect(), last = jrItems[jrItems.length - 1].getBoundingClientRect();
+      if (first.top > innerHeight || last.bottom < 0) return;
+      let best = 0, bestD = Infinity;
+      jrItems.forEach((it, i) => {
+        const r = it.getBoundingClientRect();
+        const d = mid >= r.top && mid <= r.bottom ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      if (best !== jrCur) { jrCur = best; setActive(best); }
+    };
+    const queuePick = () => { if (!jrRaf) jrRaf = requestAnimationFrame(pickActive); };
+    addEventListener('scroll', queuePick, { passive: true });
+    addEventListener('resize', queuePick);
+    queuePick();
     jrSteps.forEach((s, i) => s.addEventListener('click', () => jrItems[i].scrollIntoView({ behavior: 'smooth', block: 'center' })));
   }
 
@@ -730,7 +746,7 @@
       x: () => -dist(), ease: 'none',
       scrollTrigger: {
         trigger: '#projects', pin, start: 'top top',
-        end: () => '+=' + dist(), scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1,
+        end: () => '+=' + dist(), scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1, refreshPriority: 1,
         onUpdate: self => {
           const cards = $$('.card');
           const idx = Math.min(cards.length - 1, Math.round(self.progress * (cards.length - 1)));
