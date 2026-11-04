@@ -648,11 +648,23 @@
   mm.add('(min-width: 721px)', () => {
     const trackEl = $('#h-track'), pin = $('.h-pin');
     const dist = () => Math.max(0, trackEl.scrollWidth - innerWidth + 48);
+    const fill = $('#h-fill'), cur = $('#h-cur');
+    let curIdx = -1;
     gsap.to(trackEl, {
       x: () => -dist(), ease: 'none',
       scrollTrigger: {
         trigger: '#projects', pin, start: 'top top',
-        end: () => '+=' + dist(), scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1
+        end: () => '+=' + dist(), scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1,
+        onUpdate: self => {
+          const cards = $$('.card');
+          const idx = Math.min(cards.length - 1, Math.round(self.progress * (cards.length - 1)));
+          if (fill) fill.style.transform = `scaleX(${self.progress})`;
+          if (idx !== curIdx) {
+            curIdx = idx;
+            cards.forEach((c, i) => c.classList.toggle('is-active', i === idx));
+            if (cur) { cur.textContent = String(idx + 1).padStart(2, '0'); gsap.fromTo(cur, { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }); }
+          }
+        }
       }
     });
     $$('.card').forEach(c => gsap.from(c, { opacity: 0.2, scale: 0.92, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '#projects', start: 'top 70%' } }));

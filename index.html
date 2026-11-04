@@ -197,13 +197,24 @@
       <div class="h-pin">
         <div class="h-head wrap">
           <div class="sec-head"><span class="mono">03</span><h2>Selected Work</h2><i></i></div>
-          <p class="mono h-hint">Scroll →</p>
+          <div class="h-prog" aria-hidden="true">
+            <span class="mono h-count"><b id="h-cur">01</b> / 04</span>
+            <div class="h-bar"><i id="h-fill"></i></div>
+          </div>
         </div>
         <div class="h-track" id="h-track">
 
           <article class="card tilt">
             <div class="card-num">01</div>
-            <div class="card-visual v1"><i></i><i></i><i></i></div>
+            <div class="card-visual v1" aria-hidden="true">
+              <div class="mk mk-cctv">
+                <span class="mk-rec">REC · CAM-02</span><span class="mk-clock">09:41:07</span>
+                <i class="mk-head"></i><i class="mk-body"></i>
+                <div class="mk-box"><b></b><b></b><b></b><b></b></div>
+                <div class="mk-scan"></div>
+                <span class="mk-tag">✓ Face matched · Present</span>
+              </div>
+            </div>
             <h3>CCTV Attendance<br />Management</h3>
             <p>Automated attendance via CCTV face recognition, with role-based access and exportable HR dashboards.</p>
             <div class="tags"><span>Python</span><span>FastAPI</span><span>PostgreSQL</span><span>Redis</span><span>React/Next.js</span><span>Docker</span><span>n8n</span></div>
@@ -211,7 +222,18 @@
 
           <article class="card tilt">
             <div class="card-num">02</div>
-            <div class="card-visual v2"><i></i><i></i><i></i></div>
+            <div class="card-visual v2" aria-hidden="true">
+              <div class="mk mk-learn">
+                <div class="mk-top"><i></i><i></i><i></i><span>Course</span></div>
+                <div class="mk-body2">
+                  <h4><small>Module 03</small>Backend Foundations</h4>
+                  <div class="mk-bar"><i></i></div>
+                  <div class="mk-les" style="--d:.4s">Lesson 1 · Intro</div>
+                  <div class="mk-les" style="--d:1.6s">Lesson 2 · REST APIs</div>
+                  <div class="mk-les" style="--d:2.8s">Lesson 3 · Async tasks</div>
+                </div>
+              </div>
+            </div>
             <h3>Distance Learning<br />Platform</h3>
             <p>E-learning platform with 30+ REST endpoints, user/course management, and async processing.</p>
             <div class="tags"><span>FastAPI</span><span>MongoDB</span><span>Redis</span><span>Celery</span><span>React/Next.js</span></div>
@@ -219,7 +241,17 @@
 
           <article class="card tilt">
             <div class="card-num">03</div>
-            <div class="card-visual v3"><i></i><i></i><i></i></div>
+            <div class="card-visual v3" aria-hidden="true">
+              <div class="mk mk-board-wrap">
+                <div class="mk-top"><i></i><i></i><i></i><span>Work orders</span></div>
+                <div class="mk-board">
+                  <div class="mk-col" data-t="To do"><div class="mk-job ghost"></div><div class="mk-job"></div></div>
+                  <div class="mk-col" data-t="In progress"><div class="mk-job ghost"></div><div class="mk-job hot"></div></div>
+                  <div class="mk-col" data-t="Done"></div>
+                  <div class="mk-job hot mk-move" style="position:absolute"></div>
+                </div>
+              </div>
+            </div>
             <h3>Property Maintenance<br />System</h3>
             <p>Property, work-order and technician management with admin/technician dashboards; ~40% faster APIs via Redis caching.</p>
             <div class="tags"><span>FastAPI</span><span>MongoDB</span><span>Redis</span><span>Celery</span><span>React/Next.js</span></div>
@@ -227,7 +259,17 @@
 
           <article class="card tilt">
             <div class="card-num">04</div>
-            <div class="card-visual v4"><i></i><i></i><i></i></div>
+            <div class="card-visual v4" aria-hidden="true">
+              <div class="mk mk-erp">
+                <div class="mk-top"><i></i><i></i><i></i><span>Hospital dashboard</span></div>
+                <div class="mk-pills">
+                  <div class="mk-pill"><small>Admissions</small><b>128</b></div>
+                  <div class="mk-pill"><small>Wards</small><b>06</b></div>
+                  <div class="mk-pill ok"><small>System</small><b>● Live</b></div>
+                </div>
+                <svg class="mk-ecg" viewBox="0 0 300 64" preserveAspectRatio="none"><path pathLength="420" d="M0 38 H52 L60 38 L66 14 L74 56 L82 30 L88 38 H150 L158 38 L164 12 L172 58 L180 30 L186 38 H300"/></svg>
+              </div>
+            </div>
             <h3>Hospital ERP<br /><small>Personal project</small></h3>
             <p>On-premise Hospital ERP with a full Docker Compose stack, JWT/RBAC auth, SQLAlchemy models and Alembic migrations.</p>
             <div class="tags"><span>FastAPI</span><span>Next.js</span><span>PostgreSQL</span><span>Redis</span><span>MinIO</span><span>Celery</span><span>Docker</span><span>Nginx</span></div>
