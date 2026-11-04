@@ -417,17 +417,17 @@ footer{margin-top:clamp(70px,10vw,140px);padding:26px 20px;border-top:1px solid 
 @media (prefers-reduced-motion:reduce){.mk *,.mk{animation:none!important}.mk-tag{opacity:1}.mk-box{opacity:1}.mk-bar i{width:70%}.mk-ecg path{stroke-dashoffset:0}}
 
 /* ---------- Journey: sticky scroll-spy ---------- */
-.jr{display:grid;grid-template-columns:minmax(260px,.85fr) 1.7fr;gap:clamp(30px,5vw,90px);align-items:start}
-.jr-side{position:sticky;top:18vh;align-self:start;min-width:0;padding:clamp(20px,2.4vw,32px);border:1px solid var(--line);border-radius:22px;background:rgba(15,18,22,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.jr{display:grid;grid-template-columns:minmax(260px,.85fr) 1.7fr;gap:clamp(64px,10vw,150px);align-items:start}
+.jr-side{position:sticky;top:11vh;align-self:start;min-width:0;padding:clamp(20px,2.4vw,32px);border:1px solid var(--line);border-radius:22px;background:rgba(15,18,22,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .jr-panes{display:grid}
 .jr-pane{grid-area:1/1;opacity:0;transform:translateY(18px);filter:blur(6px);transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1),filter .5s;pointer-events:none}
 .jr-pane.is-on{opacity:1;transform:none;filter:none}
 .jr-year{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
-.jr-year b{font-family:var(--f-display);font-weight:800;font-size:clamp(64px,8vw,120px);line-height:.9;letter-spacing:-.05em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.jr-year small{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,3.6vw,52px);line-height:1;letter-spacing:-.03em;text-transform:none;color:var(--fg)}
+.jr-year b{font-family:var(--f-display);font-weight:800;font-size:clamp(56px,6.6vw,100px);line-height:.9;letter-spacing:-.05em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.jr-year small{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,3vw,44px);line-height:1;letter-spacing:-.03em;text-transform:none;color:var(--fg)}
 .jr-role{font-family:var(--f-display);font-weight:700;font-size:clamp(20px,2vw,28px);letter-spacing:-.02em;line-height:1.15}
 .jr-co{margin-top:8px;color:var(--mut);font-size:15px;max-width:34ch}
-.jr-steps{list-style:none;display:flex;flex-direction:column;gap:2px;margin-top:clamp(24px,4vw,44px);padding-left:0}
+.jr-steps{list-style:none;display:flex;flex-direction:column;gap:0;margin-top:clamp(16px,3vh,32px);padding-left:0}
 .jr-step{display:flex;align-items:center;gap:12px;padding:7px 0;background:none;border:0;color:var(--mut);font-size:12px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:color .3s}
 .jr-step i{display:block;width:14px;height:2px;border-radius:2px;background:var(--line);transition:width .4s,background .4s}
 .jr-step:hover{color:var(--fg)}
@@ -489,3 +489,14 @@ footer{margin-top:clamp(70px,10vw,140px);padding:26px 20px;border-top:1px solid 
 @media (max-width:820px){.social-cards{grid-template-columns:1fr;max-width:420px}}
 @media (max-width:560px){.status-card{border-radius:20px}}
 @media (prefers-reduced-motion:reduce){.st-dot{animation:none}}
+
+/* ---------- Journey: year wheel ---------- */
+.jr-wheel{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:0}
+.jr-side>*:not(.jr-wheel){position:relative;z-index:1}
+.jr-wheel svg{position:absolute;overflow:visible}
+.jw-arc{fill:none;stroke:rgba(160,178,196,.55);stroke-width:1.5}
+.jw-arc.glow{stroke:rgba(255,107,71,.5);stroke-width:2}
+.jw-tick{stroke:rgba(160,178,196,.8);stroke-width:1.5;stroke-linecap:round}
+.jw-yr{font-family:var(--f-mono);fill:#c3ccd5;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(15,18,22,.9);stroke-width:5px;stroke-linejoin:round}
+.jw-yr.on{fill:var(--b);font-family:var(--f-display);font-weight:800}
+.jw-dot{fill:var(--b);filter:drop-shadow(0 0 7px rgba(255,107,71,.95))}
