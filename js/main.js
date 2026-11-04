@@ -428,6 +428,8 @@
       hideT = setTimeout(() => bot.classList.remove('talk'), ms);
     };
 
+    addEventListener('bot:say', e => say(e.detail, 3200));
+
     if (!reduce) {
       gsap.set(body, { transformPerspective: 500 });
       const tiltX = gsap.quickTo(body, 'rotationX', { duration: 0.6, ease: 'power3.out' });
@@ -504,6 +506,64 @@
       t.addEventListener('pointerenter', () => lightTile(t));
       t.addEventListener('pointerleave', clear);
     });
+  }
+
+  /* ------------------------------------------------------------------
+   * Contact: copy email, live IST clock
+   * ---------------------------------------------------------------- */
+  const copyBtn = $('#copy-mail');
+  if (copyBtn) {
+    const label = $('.cm-label', copyBtn), hint = $('#cm-hint');
+    const original = label.textContent;
+    let resetT;
+    const burst = () => {
+      if (reduce) return;
+      const r = copyBtn.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      for (let i = 0; i < 16; i++) {
+        const d = document.createElement('i');
+        d.className = 'cm-burst';
+        document.body.appendChild(d);
+        const ang = Math.random() * Math.PI * 2, dist = 70 + Math.random() * 90;
+        gsap.fromTo(d, { x: cx, y: cy, scale: 1, opacity: 1 }, {
+          x: cx + Math.cos(ang) * dist, y: cy + Math.sin(ang) * dist - 20, scale: 0, opacity: 0,
+          duration: 0.8 + Math.random() * 0.4, ease: 'power3.out', onComplete: () => d.remove()
+        });
+      }
+    };
+    const done = ok => {
+      clearTimeout(resetT);
+      copyBtn.style.minWidth = copyBtn.offsetWidth + 'px';
+      copyBtn.classList.toggle('copied', ok);
+      label.textContent = ok ? 'Copied ✓' : 'Press Ctrl+C';
+      hint.textContent = ok ? 'Email copied to clipboard' : 'Copy failed — select and copy manually';
+      hint.classList.toggle('ok', ok);
+      if (ok) { burst(); dispatchEvent(new CustomEvent('bot:say', { detail: 'Copied! Talk soon 👋' })); }
+      resetT = setTimeout(() => {
+        label.textContent = original; copyBtn.classList.remove('copied');
+        hint.textContent = 'Click to copy'; hint.classList.remove('ok');
+        copyBtn.style.minWidth = '';
+      }, 2200);
+    };
+    copyBtn.addEventListener('click', async () => {
+      const text = copyBtn.dataset.email;
+      try { await navigator.clipboard.writeText(text); done(true); }
+      catch (e) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          const ok = document.execCommand('copy'); ta.remove(); done(ok);
+        } catch (e2) { done(false); }
+      }
+    });
+  }
+
+  const istEl = $('#ist-time');
+  if (istEl) {
+    let fmt;
+    try { fmt = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }); } catch (e) { fmt = null; }
+    const tick = () => { if (fmt) istEl.textContent = fmt.format(new Date()).toUpperCase(); };
+    tick(); setInterval(tick, 15000);
   }
 
   if (reduce) { return; }
