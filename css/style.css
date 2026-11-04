@@ -417,7 +417,7 @@ footer{margin-top:clamp(70px,10vw,140px);padding:26px 20px;border-top:1px solid 
 @media (prefers-reduced-motion:reduce){.mk *,.mk{animation:none!important}.mk-tag{opacity:1}.mk-box{opacity:1}.mk-bar i{width:70%}.mk-ecg path{stroke-dashoffset:0}}
 
 /* ---------- Journey: sticky scroll-spy ---------- */
-.jr{display:grid;grid-template-columns:minmax(260px,.85fr) 1.7fr;gap:clamp(30px,5vw,90px);align-items:start}
+.jr{display:grid;grid-template-columns:minmax(260px,.85fr) 1.7fr;gap:clamp(64px,10vw,150px);align-items:start}
 .jr-side{position:sticky;top:11vh;align-self:start;min-width:0;padding:clamp(20px,2.4vw,32px);border:1px solid var(--line);border-radius:22px;background:rgba(15,18,22,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .jr-panes{display:grid}
 .jr-pane{grid-area:1/1;opacity:0;transform:translateY(18px);filter:blur(6px);transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1),filter .5s;pointer-events:none}
@@ -490,14 +490,13 @@ footer{margin-top:clamp(70px,10vw,140px);padding:26px 20px;border-top:1px solid 
 @media (max-width:560px){.status-card{border-radius:20px}}
 @media (prefers-reduced-motion:reduce){.st-dot{animation:none}}
 
-/* ---------- Journey: year dial ---------- */
-.jr-dial{display:block;width:clamp(120px,19vh,168px);height:auto;margin:0 0 clamp(12px,2vh,20px);overflow:visible}
-.dl-ring{fill:rgba(255,255,255,.02);stroke:rgba(130,150,171,.28);stroke-width:1.5}
-.dl-arc{fill:none;stroke:var(--b);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:527.8;stroke-dashoffset:527.8;opacity:.8}
-.dl-tick{stroke:rgba(130,150,171,.55);stroke-width:1.5;stroke-linecap:round}
-.dl-yr{font-family:var(--f-mono);font-size:13.5px;fill:var(--mut);text-anchor:middle;dominant-baseline:middle;transition:fill .3s,font-weight .3s}
-.dl-yr.on{fill:var(--b);font-weight:700}
-.dl-hand{stroke:var(--b);stroke-width:2.5;stroke-linecap:round;filter:drop-shadow(0 0 4px rgba(255,107,71,.7))}
-.dl-tip{fill:var(--b);filter:drop-shadow(0 0 6px rgba(255,107,71,.9))}
-.dl-hub{fill:var(--bg);stroke:var(--b);stroke-width:2}
-@media (max-height:760px){.jr-dial{display:none}}
+/* ---------- Journey: year wheel ---------- */
+.jr-wheel{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:0}
+.jr-side>*:not(.jr-wheel){position:relative;z-index:1}
+.jr-wheel svg{position:absolute;overflow:visible}
+.jw-arc{fill:none;stroke:rgba(160,178,196,.55);stroke-width:1.5}
+.jw-arc.glow{stroke:rgba(255,107,71,.5);stroke-width:2}
+.jw-tick{stroke:rgba(160,178,196,.8);stroke-width:1.5;stroke-linecap:round}
+.jw-yr{font-family:var(--f-mono);fill:#c3ccd5;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(15,18,22,.9);stroke-width:5px;stroke-linejoin:round}
+.jw-yr.on{fill:var(--b);font-family:var(--f-display);font-weight:800}
+.jw-dot{fill:var(--b);filter:drop-shadow(0 0 7px rgba(255,107,71,.95))}

@@ -702,28 +702,71 @@
     };
     // Pick the card whose centre is nearest the middle of the viewport. Reads live
     // positions on scroll, so it stays correct however the pinned section above shifts layout.
-    // Year dial: the hand sweeps clockwise from the newest year to the oldest as you scroll
-    const dial = $('#jr-dial'), hand = $('#dl-hand'), arc = $('#dl-arc');
-    const dMax = dial ? +dial.dataset.max : 0, dMin = dial ? +dial.dataset.min : 0;
-    const stepDeg = dial ? 360 / (dMax - dMin + 1) : 0;
+    // Year wheel: a big clock-style arc around the panel, years where the numbers would be.
+    // It turns as you scroll so the current year always sits at 3 o'clock, beside the card.
+    const wheel = $('#jr-wheel'), side = wheel && wheel.parentElement;
     const yrs = jrPanes.map(p => +p.querySelector('.jr-year b').textContent);
-    const yrLabels = dial ? $$('.dl-yr', dial) : [];
-    const dialState = { a: 0 };
-    let dialYear = -1;
-    const paintDial = () => {
-      gsap.set(hand, { rotation: dialState.a, svgOrigin: '100 100' });
-      arc.style.strokeDashoffset = 527.8 * (1 - Math.min(dialState.a, 360) / 360);
-      const yr = Math.round(dMax - dialState.a / stepDeg);
-      if (yr !== dialYear) { dialYear = yr; yrLabels.forEach(l => l.classList.toggle('on', +l.dataset.yr === yr)); }
+    const yMax = Math.max(...yrs), yMin = Math.min(...yrs);
+    const wState = { pos: 0 };
+    let W = null;
+    const NS = 'http://www.w3.org/2000/svg';
+    const mk = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+    const buildWheel = () => {
+      if (!wheel) return;
+      wheel.textContent = ''; W = null;
+      const sw = side.offsetWidth, sh = side.offsetHeight, tl = $('#timeline');
+      if (!sw || !tl) return;
+      const gap = Math.max(36, (tl.getBoundingClientRect().left + 10) - side.getBoundingClientRect().right);
+      const R = sw / 2 + gap * 0.5;
+      const maxRad = Math.acos(Math.min(0.99, (sw / 2 + 12) / R));
+      const step = 62 / R;
+      const S = 2 * (R + 70), c0 = S / 2;
+      const svg = mk('svg', { width: S, height: S, viewBox: `0 0 ${S} ${S}` });
+      svg.style.left = sw / 2 - S / 2 + 'px'; svg.style.top = sh / 2 - S / 2 + 'px';
+      const pt = (rad, r) => [c0 + r * Math.cos(rad), c0 + r * Math.sin(rad)];
+      const [x1, y1] = pt(-maxRad - 0.12, R), [x2, y2] = pt(maxRad + 0.12, R);
+      svg.appendChild(mk('path', { class: 'jw-arc', d: `M${x1} ${y1} A${R} ${R} 0 0 1 ${x2} ${y2}` }));
+      const items = [];
+      for (let y = yMax; y >= yMin; y--) {
+        const tick = mk('line', { class: 'jw-tick' });
+        const label = mk('text', { class: 'jw-yr' }); label.textContent = y;
+        svg.append(tick, label);
+        items.push({ i: yMax - y, tick, label });
+      }
+      const dot = mk('circle', { class: 'jw-dot', cx: c0 + R, cy: c0, r: 4.5 });
+      svg.appendChild(dot);
+      wheel.appendChild(svg);
+      W = { R, step, maxRad, c0, items, fs: Math.max(12, Math.min(22, gap * 0.34)) };
     };
-    const moveDial = f => {
-      if (!dial) return;
+    const paintWheel = () => {
+      if (!W) return;
+      const { R, step, maxRad, c0, items, fs } = W, pos = wState.pos;
+      items.forEach(it => {
+        const th = (it.i - pos) * step, ad = Math.abs(th);
+        const vis = ad < maxRad ? Math.pow(1 - ad / maxRad, 0.8) : 0;
+        const x = c0 + R * Math.cos(th), y = c0 + R * Math.sin(th);
+        const on = Math.abs(it.i - pos) < 0.5;
+        it.label.setAttribute('x', x.toFixed(1)); it.label.setAttribute('y', y.toFixed(1));
+        it.label.style.opacity = vis.toFixed(2);
+        it.label.style.fontSize = (on ? fs * 1.35 : fs * 0.78) + 'px';
+        it.label.classList.toggle('on', on);
+        const tx1 = c0 + (R - 5) * Math.cos(th), ty1 = c0 + (R - 5) * Math.sin(th), tx2 = c0 + (R + 5) * Math.cos(th), ty2 = c0 + (R + 5) * Math.sin(th);
+        it.tick.setAttribute('x1', tx1.toFixed(1)); it.tick.setAttribute('y1', ty1.toFixed(1));
+        it.tick.setAttribute('x2', tx2.toFixed(1)); it.tick.setAttribute('y2', ty2.toFixed(1));
+        it.tick.style.opacity = (vis * 0.9).toFixed(2);
+      });
+    };
+    const moveWheel = f => {
+      if (!wheel) return;
       const i = Math.min(yrs.length - 2, Math.max(0, Math.floor(f)));
       const t = Math.min(1, Math.max(0, f - i));
       const yr = yrs[i] + (yrs[i + 1] - yrs[i]) * t;
-      gsap.to(dialState, { a: (dMax - yr) * stepDeg, duration: 0.6, ease: 'power3.out', overwrite: true, onUpdate: paintDial });
+      gsap.to(wState, { pos: yMax - yr, duration: 0.7, ease: 'power3.out', overwrite: true, onUpdate: paintWheel });
     };
-    paintDial();
+    buildWheel(); paintWheel();
+    addEventListener('load', () => { buildWheel(); paintWheel(); });
+    let wTimer;
+    addEventListener('resize', () => { clearTimeout(wTimer); wTimer = setTimeout(() => { buildWheel(); paintWheel(); }, 150); });
 
     let jrCur = -1, jrRaf = 0;
     const pickActive = () => {
@@ -744,7 +787,7 @@
       if (mid <= cs[0]) f = 0;
       else if (mid >= cs[cs.length - 1]) f = cs.length - 1;
       else { const i = cs.findIndex((c, k) => mid >= c && mid < cs[k + 1]); f = i + (mid - cs[i]) / (cs[i + 1] - cs[i]); }
-      moveDial(f);
+      moveWheel(f);
     };
     const queuePick = () => { if (!jrRaf) jrRaf = requestAnimationFrame(pickActive); };
     addEventListener('scroll', queuePick, { passive: true });
