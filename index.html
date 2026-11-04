@@ -362,47 +362,88 @@
     <section id="experience" class="section" data-bot="From trainee to software engineer.">
       <div class="wrap">
         <div class="sec-head reveal"><span class="mono">05</span><h2>Journey</h2><i></i></div>
-        <div class="timeline" id="timeline">
+        <div class="jr">
+          <aside class="jr-side" aria-hidden="true">
+            <div class="jr-panes">
+              <div class="jr-pane is-on" data-i="0">
+                <div class="jr-year"><b>2026</b><small class="mono">→ Present</small></div>
+                <div class="jr-role">Software Engineer</div>
+                <div class="jr-co">ZionX Engineering and AI Delivery</div>
+              </div>
+              <div class="jr-pane" data-i="1">
+                <div class="jr-year"><b>2025</b><small class="mono">→ 2026</small></div>
+                <div class="jr-role">Associate Software Engineer</div>
+                <div class="jr-co">Inaisys Solutions Pvt. Ltd., Kanchipuram</div>
+              </div>
+              <div class="jr-pane" data-i="2">
+                <div class="jr-year"><b>2024</b><small class="mono">→ 2025</small></div>
+                <div class="jr-role">Software Engineer Trainee</div>
+                <div class="jr-co">Gitim.ai Solutions Pvt. Ltd., Bangalore</div>
+              </div>
+              <div class="jr-pane" data-i="3">
+                <div class="jr-year"><b>2022</b><small class="mono">→ 2024</small></div>
+                <div class="jr-role">M.Sc. Information Technology</div>
+                <div class="jr-co">SRM Institute of Science and Technology · CGPA 8.29</div>
+              </div>
+            </div>
+            <ol class="jr-steps">
+              <li><button type="button" class="jr-step is-on" data-i="0" data-cursor><i></i><span class="mono">ZionX</span></button></li>
+              <li><button type="button" class="jr-step" data-i="1" data-cursor><i></i><span class="mono">Inaisys</span></button></li>
+              <li><button type="button" class="jr-step" data-i="2" data-cursor><i></i><span class="mono">Gitim.ai</span></button></li>
+              <li><button type="button" class="jr-step" data-i="3" data-cursor><i></i><span class="mono">SRMIST</span></button></li>
+            </ol>
+          </aside>
+          <div class="timeline" id="timeline">
           <div class="tl-line"><i id="tl-fill"></i></div>
 
-          <div class="tl-item">
+          <div class="tl-item" data-i="0">
             <div class="tl-dot"></div>
             <div class="tl-card tilt">
-              <div class="tl-period mono">Jun 2026 — Present</div>
-              <h3>Software Engineer</h3>
-              <div class="tl-co">ZionX Engineering and AI Delivery</div>
+              <div class="tl-hd">
+                <div class="tl-period mono">Jun 2026 — Present</div>
+                <h3>Software Engineer</h3>
+                <div class="tl-co">ZionX Engineering and AI Delivery</div>
+              </div>
               <p>Build and ship full-stack features with Python/FastAPI backends and React/Next.js frontends using AI-assisted development workflows. Containerize services with Docker and maintain GitHub Actions CI/CD pipelines. Write API tests (Postman/pytest) and contribute to code reviews, sprint planning and documentation in an Agile team.</p>
+              <div class="tl-chips"><span class="tl-impact">Full-stack feature delivery</span><span class="tl-impact">CI/CD on GitHub Actions</span></div><div class="tags tl-tech"><span>Python</span><span>FastAPI</span><span>React</span><span>Next.js</span><span>Docker</span><span>pytest</span></div>
             </div>
           </div>
-
-          <div class="tl-item">
+          <div class="tl-item" data-i="1">
             <div class="tl-dot"></div>
             <div class="tl-card tilt">
-              <div class="tl-period mono">Sep 2025 — Jun 2026</div>
-              <h3>Associate Software Engineer</h3>
-              <div class="tl-co">Inaisys Solutions Pvt. Ltd., Kanchipuram</div>
+              <div class="tl-hd">
+                <div class="tl-period mono">Sep 2025 — Jun 2026</div>
+                <h3>Associate Software Engineer</h3>
+                <div class="tl-co">Inaisys Solutions Pvt. Ltd., Kanchipuram</div>
+              </div>
               <p>Built a full-stack CCTV-based Attendance Management app (FastAPI + React/Next.js) with real-time face recognition, role-based dashboards and reporting. Managed Linux (Ubuntu) servers — Nginx, Docker, monitoring and security hardening. Automated deployments with GitHub Actions and shell scripts (~60% less manual effort); built n8n workflows for business process automation.</p>
+              <div class="tl-chips"><span class="tl-impact">~60% less manual deploy effort</span><span class="tl-impact">Real-time face recognition</span></div><div class="tags tl-tech"><span>FastAPI</span><span>Next.js</span><span>Nginx</span><span>Docker</span><span>n8n</span><span>Linux</span></div>
             </div>
           </div>
-
-          <div class="tl-item">
+          <div class="tl-item" data-i="2">
             <div class="tl-dot"></div>
             <div class="tl-card tilt">
-              <div class="tl-period mono">May 2024 — May 2025</div>
-              <h3>Software Engineer Trainee</h3>
-              <div class="tl-co">Gitim.ai Solutions Pvt. Ltd., Bangalore</div>
+              <div class="tl-hd">
+                <div class="tl-period mono">May 2024 — May 2025</div>
+                <h3>Software Engineer Trainee</h3>
+                <div class="tl-co">Gitim.ai Solutions Pvt. Ltd., Bangalore</div>
+              </div>
               <p>Developed full-stack applications for a distance learning platform and a property maintenance management system. Built 30+ RESTful API endpoints and designed MongoDB schemas for users, courses and properties. Integrated Redis caching and Celery async task queues, improving API response times by ~40%.</p>
+              <div class="tl-chips"><span class="tl-impact">30+ REST endpoints</span><span class="tl-impact">~40% faster API responses</span></div><div class="tags tl-tech"><span>FastAPI</span><span>MongoDB</span><span>Redis</span><span>Celery</span></div>
             </div>
           </div>
-
-          <div class="tl-item">
+          <div class="tl-item" data-i="3">
             <div class="tl-dot edu"></div>
             <div class="tl-card tilt">
-              <div class="tl-period mono">2022 — 2024</div>
-              <h3>M.Sc. Information Technology</h3>
-              <div class="tl-co">SRM Institute of Science and Technology · CGPA 8.29</div>
+              <div class="tl-hd">
+                <div class="tl-period mono">2022 — 2024</div>
+                <h3>M.Sc. Information Technology</h3>
+                <div class="tl-co">SRM Institute of Science and Technology · CGPA 8.29</div>
+              </div>
               <p>Earlier: BCA (2019 – 2022), Sri Chandrasekharendra Saraswathi Viswa Mahavidyalaya — CGPA 8.80.</p>
+              <div class="tl-chips"><span class="tl-impact">M.Sc. CGPA 8.29</span><span class="tl-impact">BCA CGPA 8.80</span></div>
             </div>
+          </div>
           </div>
         </div>
       </div>

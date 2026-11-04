@@ -631,6 +631,22 @@
     });
   }
 
+  // Journey: the sticky left panel follows whichever role is in focus
+  const jrItems = $$('.tl-item');
+  const jrPanes = $$('.jr-pane'), jrSteps = $$('.jr-step');
+  if (jrItems.length && jrPanes.length) {
+    const setActive = i => {
+      jrPanes.forEach((p, k) => p.classList.toggle('is-on', k === i));
+      jrSteps.forEach((s, k) => s.classList.toggle('is-on', k === i));
+      jrItems.forEach((it, k) => it.classList.toggle('is-active', k === i));
+    };
+    jrItems.forEach((it, i) => ScrollTrigger.create({
+      trigger: it, start: 'top 60%', end: 'bottom 60%',
+      onToggle: s => { if (s.isActive) setActive(i); }
+    }));
+    jrSteps.forEach((s, i) => s.addEventListener('click', () => jrItems[i].scrollIntoView({ behavior: 'smooth', block: 'center' })));
+  }
+
   // Section headline lines grow
   $$('.sec-head i').forEach(l => gsap.from(l, {
     scaleX: 0, transformOrigin: '0 50%', duration: 1.4, ease: 'expo.out',
