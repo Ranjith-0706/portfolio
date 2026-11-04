@@ -279,6 +279,233 @@
     onComplete: startIntro
   });
 
+  /* ------------------------------------------------------------------
+   * Design Lab demos
+   * ---------------------------------------------------------------- */
+  const clamp = gsap.utils.clamp;
+
+  // 1 · 3D depth card
+  const tiltStage = $('#lab-tilt');
+  if (tiltStage && !reduce) {
+    const card = $('.lt-card', tiltStage);
+    const rx = gsap.quickTo(card, 'rotationX', { duration: 0.6, ease: 'power3.out' });
+    const ry = gsap.quickTo(card, 'rotationY', { duration: 0.6, ease: 'power3.out' });
+    gsap.set(card, { transformPerspective: 800 });
+    tiltStage.addEventListener('pointermove', e => {
+      const r = tiltStage.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      ry((px - 0.5) * 36); rx((0.5 - py) * 36);
+      card.style.setProperty('--gx', px * 100 + '%'); card.style.setProperty('--gy', py * 100 + '%');
+    });
+    tiltStage.addEventListener('pointerleave', () => { rx(0); ry(0); });
+  }
+
+  // 2 · magnetic button
+  const magStage = $('#lab-mag');
+  if (magStage && !reduce) {
+    const btn = $('.lm-btn', magStage), label = $('span', btn);
+    const bx = gsap.quickTo(btn, 'x', { duration: 0.5, ease: 'power3.out' });
+    const by = gsap.quickTo(btn, 'y', { duration: 0.5, ease: 'power3.out' });
+    const tx = gsap.quickTo(label, 'x', { duration: 0.5, ease: 'power3.out' });
+    const ty = gsap.quickTo(label, 'y', { duration: 0.5, ease: 'power3.out' });
+    magStage.addEventListener('pointermove', e => {
+      const r = magStage.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+      bx(dx * 0.4); by(dy * 0.4); tx(dx * 0.12); ty(dy * 0.12);
+    });
+    magStage.addEventListener('pointerleave', () => { bx(0); by(0); tx(0); ty(0); });
+  }
+
+  // 3 · text scramble
+  const scr = $('#lab-scramble');
+  if (scr) {
+    const words = ['Design × Code', 'Idea → Shipped', 'Pixels → Product', 'Human + AI'];
+    const glyphs = '!-_/[]{}—=+*^?#01';
+    let w = 0, raf = 0, started = false;
+    const next = () => {
+      w = (w + 1) % words.length;
+      const to = words[w];
+      if (reduce) { scr.textContent = to; return; }
+      const from = scr.textContent, len = Math.max(from.length, to.length), q = [];
+      for (let i = 0; i < len; i++) {
+        const start = Math.floor(Math.random() * 14);
+        q.push({ from: from[i] || '', to: to[i] || '', start, end: start + 10 + Math.floor(Math.random() * 14), c: '' });
+      }
+      let f = 0;
+      cancelAnimationFrame(raf);
+      const step = () => {
+        let out = '', done = 0;
+        q.forEach(o => {
+          if (f >= o.end) { done++; out += o.to; }
+          else if (f >= o.start) {
+            if (!o.c || Math.random() < 0.28) o.c = glyphs[Math.floor(Math.random() * glyphs.length)];
+            out += `<i>${o.c}</i>`;
+          } else out += o.from;
+        });
+        scr.innerHTML = out;
+        if (done < q.length) { f++; raf = requestAnimationFrame(step); } else scr.textContent = to;
+      };
+      step();
+    };
+    scr.addEventListener('click', next);
+    scr.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); } });
+    if (finePointer) scr.addEventListener('pointerenter', () => { if (started) next(); });
+    ScrollTrigger.create({ trigger: scr, start: 'top 85%', once: true, onEnter: () => { next(); started = true; } });
+  }
+
+  // 4 · cursor spotlight
+  const spot = $('#lab-spot');
+  if (spot && !reduce) {
+    const move = e => {
+      const r = spot.getBoundingClientRect();
+      spot.style.setProperty('--x', e.clientX - r.left + 'px');
+      spot.style.setProperty('--y', e.clientY - r.top + 'px');
+    };
+    spot.addEventListener('pointermove', move);
+    spot.addEventListener('pointerdown', move);
+    // idle drift so it is discoverable before the first hover
+    const o = { t: 0 };
+    gsap.to(o, { t: Math.PI * 2, duration: 7, repeat: -1, ease: 'none', onUpdate() {
+      if (spot.matches(':hover')) return;
+      const r = spot.getBoundingClientRect();
+      spot.style.setProperty('--x', r.width * (0.5 + Math.cos(o.t) * 0.28) + 'px');
+      spot.style.setProperty('--y', r.height * (0.5 + Math.sin(o.t * 1.3) * 0.22) + 'px');
+    } });
+  }
+
+  // 5 · parallax layers + draggable chips
+  const par = $('#lab-par');
+  if (par) {
+    if (!reduce) {
+      const layers = $$('.lpar-layer', par).map(l => ({
+        d: +l.dataset.depth,
+        x: gsap.quickTo(l, 'x', { duration: 0.9, ease: 'power3.out' }),
+        y: gsap.quickTo(l, 'y', { duration: 0.9, ease: 'power3.out' })
+      }));
+      par.addEventListener('pointermove', e => {
+        const r = par.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+        layers.forEach(l => { l.x(-px * l.d * 60); l.y(-py * l.d * 60); });
+      });
+      par.addEventListener('pointerleave', () => layers.forEach(l => { l.x(0); l.y(0); }));
+    }
+    $$('.chip', par).forEach(chip => {
+      chip.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        chip.setPointerCapture(e.pointerId);
+        chip.classList.add('drag');
+        const sr = par.getBoundingClientRect(), cr = chip.getBoundingClientRect();
+        const sx = e.clientX, sy = e.clientY;
+        const bx = gsap.getProperty(chip, 'x'), by = gsap.getProperty(chip, 'y');
+        const minX = sr.left - cr.left, maxX = sr.right - cr.right, minY = sr.top - cr.top, maxY = sr.bottom - cr.bottom;
+        if (!reduce) gsap.to(chip, { scale: 1.12, duration: 0.25, ease: 'back.out(3)' });
+        const move = ev => gsap.set(chip, { x: bx + clamp(minX, maxX, ev.clientX - sx), y: by + clamp(minY, maxY, ev.clientY - sy) });
+        const up = () => {
+          chip.classList.remove('drag');
+          chip.removeEventListener('pointermove', move);
+          chip.removeEventListener('pointerup', up);
+          chip.removeEventListener('pointercancel', up);
+          if (!reduce) gsap.to(chip, { scale: 1, duration: 0.5, ease: 'elastic.out(1,0.5)' });
+        };
+        chip.addEventListener('pointermove', move);
+        chip.addEventListener('pointerup', up);
+        chip.addEventListener('pointercancel', up);
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------
+   * AI sidekick: eyes follow the cursor, head tilts, blinks, talks per section
+   * ---------------------------------------------------------------- */
+  const bot = $('#bot');
+  if (bot) {
+    const body = $('#bot-body'), eyes = $$('.bot-eye', bot), bubble = $('#bot-bubble'), hop = $('.bot-hop', bot);
+    let hideT;
+    const say = (msg, ms = 4200) => {
+      bubble.textContent = msg;
+      bot.classList.add('talk');
+      clearTimeout(hideT);
+      hideT = setTimeout(() => bot.classList.remove('talk'), ms);
+    };
+
+    if (!reduce) {
+      gsap.set(body, { transformPerspective: 500 });
+      const tiltX = gsap.quickTo(body, 'rotationX', { duration: 0.6, ease: 'power3.out' });
+      const tiltY = gsap.quickTo(body, 'rotationY', { duration: 0.6, ease: 'power3.out' });
+      const ex = eyes.map(e => gsap.quickTo(e, 'x', { duration: 0.25, ease: 'power2.out' }));
+      const ey = eyes.map(e => gsap.quickTo(e, 'y', { duration: 0.25, ease: 'power2.out' }));
+      const look = (x, y) => {
+        const r = body.getBoundingClientRect();
+        const dx = x - (r.left + r.width / 2), dy = y - (r.top + r.height * 0.44);
+        const d = Math.hypot(dx, dy) || 1, k = Math.min(d / 220, 1), max = r.width * 0.03;
+        ex.forEach(f => f(dx / d * max * k)); ey.forEach(f => f(dy / d * max * k));
+        tiltY(clamp(-16, 16, dx / innerWidth * -28)); tiltX(clamp(-12, 12, dy / innerHeight * 22));
+      };
+      addEventListener('pointermove', e => look(e.clientX, e.clientY), { passive: true });
+      (function blink() {
+        gsap.to(eyes, { scaleY: 0.08, duration: 0.07, yoyo: true, repeat: 1, delay: 2.4 + Math.random() * 3, onComplete: blink });
+      })();
+    }
+
+    const lines = ["Hi! I'm Ranjith's AI sidekick 👋", 'Psst… the Design Lab demos are fun.', 'He ships FastAPI + React, fast.', 'Want to hire him? Hit “Let’s talk”.'];
+    let li = 0;
+    const poke = () => {
+      say(lines[li++ % lines.length], 3600);
+      if (reduce) return;
+      gsap.fromTo(hop, { y: 0 }, { y: -20, duration: 0.2, ease: 'power2.out', yoyo: true, repeat: 1 });
+      gsap.fromTo(eyes, { scale: 1 }, { scale: 1.3, duration: 0.18, yoyo: true, repeat: 1 });
+    };
+    bot.addEventListener('click', poke);
+    bot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); poke(); } });
+
+    $$('[data-bot]').forEach(sec => ScrollTrigger.create({
+      trigger: sec, start: 'top 55%', end: 'bottom 55%',
+      onEnter: () => say(sec.dataset.bot), onEnterBack: () => say(sec.dataset.bot)
+    }));
+    setTimeout(() => { bot.classList.add('on'); say($('#hero').dataset.bot, 4800); }, 2800);
+  }
+
+  /* ------------------------------------------------------------------
+   * Toolkit: hovering a diagram node lights up its skill cards, and vice versa
+   * ---------------------------------------------------------------- */
+  const bento = $('#bento');
+  if (bento) {
+    const svg = $('.dg', bento);
+    const nodes = $$('.dg-node', bento);
+    const tiles = $$('.skill', bento);
+    if (reduce && svg && svg.pauseAnimations) svg.pauseAnimations();
+    const clear = () => {
+      nodes.forEach(n => n.classList.remove('hot'));
+      tiles.forEach(t => t.classList.remove('hot', 'dim'));
+      svg.classList.remove('focus');
+    };
+    const lightNode = key => {
+      clear();
+      svg.classList.add('focus');
+      nodes.forEach(n => n.classList.toggle('hot', n.dataset.key === key));
+      tiles.forEach(t => {
+        const on = t.dataset.nodes.split(' ').includes(key);
+        t.classList.toggle('hot', on); t.classList.toggle('dim', !on);
+      });
+    };
+    const lightTile = tile => {
+      clear();
+      const keys = tile.dataset.nodes.split(' ');
+      svg.classList.add('focus');
+      nodes.forEach(n => n.classList.toggle('hot', keys.includes(n.dataset.key)));
+    };
+    nodes.forEach(n => {
+      n.addEventListener('pointerenter', () => lightNode(n.dataset.key));
+      n.addEventListener('pointerleave', clear);
+      n.addEventListener('focus', () => lightNode(n.dataset.key));
+      n.addEventListener('blur', clear);
+    });
+    tiles.forEach(t => {
+      t.addEventListener('pointerenter', () => lightTile(t));
+      t.addEventListener('pointerleave', clear);
+    });
+  }
+
   if (reduce) { return; }
 
   /* ------------------------------------------------------------------
@@ -291,6 +518,67 @@
     once: true,
     onEnter: els => gsap.to(els, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09 })
   });
+
+  // About: statement lights up word by word as you scroll
+  const big = $('.about-text .big');
+  if (big) {
+    const wrapWords = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            const sp = document.createElement('span');
+            sp.className = 'hl-w'; sp.textContent = part;
+            frag.appendChild(sp);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) wrapWords(n);
+      });
+    };
+    wrapWords(big);
+    big.classList.add('hl');
+    gsap.to('.hl-w', {
+      opacity: 1, ease: 'none', stagger: 0.15,
+      scrollTrigger: { trigger: big, start: 'top 82%', end: 'bottom 42%', scrub: 0.5 }
+    });
+  }
+
+  // About: terminal types itself out when it scrolls into view (click to replay)
+  const term = $('#term-body');
+  if (term) {
+    const rows = $$('p', term).map(p => ({ el: p, text: p.textContent, cmd: p.classList.contains('t-cmd') }));
+    const caret = document.createElement('i');
+    caret.className = 't-caret';
+    let run = 0;
+    const play = async () => {
+      const id = ++run;
+      const wait = ms => new Promise(r => setTimeout(r, ms));
+      rows.forEach(r => { r.el.textContent = ''; r.el.style.visibility = 'hidden'; });
+      for (const r of rows) {
+        if (id !== run) return;
+        r.el.style.visibility = 'visible';
+        const tn = document.createTextNode('');
+        r.el.append(tn, caret);
+        if (r.cmd) {
+          await wait(260);
+          for (let i = 1; i <= r.text.length; i++) {
+            if (id !== run) return;
+            tn.nodeValue = r.text.slice(0, i);
+            await wait(38 + Math.random() * 40);
+          }
+          await wait(200);
+        } else {
+          tn.nodeValue = r.text;
+          await wait(220);
+        }
+      }
+    };
+    rows.forEach(r => { r.el.textContent = ''; r.el.style.visibility = 'hidden'; });
+    ScrollTrigger.create({ trigger: '#term', start: 'top 80%', once: true, onEnter: play });
+    $('#term').addEventListener('click', play);
+  }
 
   // Count-up stats
   $$('[data-count]').forEach(el => {

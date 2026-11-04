@@ -33,6 +33,7 @@
       <li><a href="#about" data-cursor>About</a></li>
       <li><a href="#skills" data-cursor>Skills</a></li>
       <li><a href="#projects" data-cursor>Work</a></li>
+      <li><a href="#lab" data-cursor>Lab</a></li>
       <li><a href="#experience" data-cursor>Journey</a></li>
       <li><a href="#contact" data-cursor class="nav-cta">Let's talk</a></li>
     </ul>
@@ -40,7 +41,7 @@
 
   <main>
     <!-- HERO -->
-    <section id="hero">
+    <section id="hero" data-bot="Hey 👋 I'm Ranjith's AI sidekick. Scroll down!">
       <div class="hero-art" aria-hidden="true"><img src="images/hero.webp" alt="" width="1800" height="1005" fetchpriority="high" /></div>
       <div class="hero-inner">
         <p class="eyebrow mono"><i class="pulse"></i> Available for new opportunities</p>
@@ -80,7 +81,7 @@
     </div>
 
     <!-- ABOUT -->
-    <section id="about" class="section">
+    <section id="about" class="section" data-bot="Full-stack, from database schema to UI.">
       <div class="wrap">
         <div class="sec-head reveal"><span class="mono">01</span><h2>About</h2><i></i></div>
         <div class="about-grid">
@@ -92,11 +93,25 @@
             <p class="reveal">Skilled in AI-assisted full-stack development — designing, building and shipping frontend and backend systems faster, from database schema to UI.</p>
             <p class="reveal">I work across RESTful API design, responsive frontend integration, Linux server administration, Docker deployments and CI/CD automation, with a focus on clean code, performance and documentation.</p>
           </div>
-          <div class="stats">
-            <div class="stat tilt reveal"><div class="num"><span data-count="4">0</span>+</div><div class="lbl">Full-stack apps delivered</div></div>
-            <div class="stat tilt reveal"><div class="num"><span data-count="40">0</span>%</div><div class="lbl">Faster APIs via Redis / Celery</div></div>
-            <div class="stat tilt reveal"><div class="num"><span data-count="60">0</span>%</div><div class="lbl">Less manual deploy effort</div></div>
-            <div class="stat tilt reveal"><div class="num"><span data-count="30">0</span>+</div><div class="lbl">REST endpoints built</div></div>
+          <div class="about-side">
+            <div class="term reveal" id="term" aria-label="Terminal summary of Ranjith">
+              <div class="term-bar"><i></i><i></i><i></i><span class="mono">ranjith@portfolio ~ zsh</span></div>
+              <div class="term-body mono" id="term-body">
+                <p class="t-cmd">whoami</p>
+                <p class="t-out">ranjith — full-stack developer</p>
+                <p class="t-cmd">cat stack.txt</p>
+                <p class="t-out">python · fastapi · react · next.js · docker</p>
+                <p class="t-cmd">cat impact.txt</p>
+                <p class="t-out">60% less manual deploy effort</p>
+                <p class="t-out">30+ REST endpoints built</p>
+                <p class="t-cmd">uptime</p>
+                <p class="t-out">shipping since 2024</p>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat tilt reveal"><div class="num"><span data-count="4">0</span>+</div><div class="lbl">Full-stack apps delivered</div></div>
+              <div class="stat tilt reveal"><div class="num"><span data-count="40">0</span>%</div><div class="lbl">Faster APIs via Redis / Celery</div></div>
+            </div>
           </div>
         </div>
         <figure class="scene tilt reveal">
@@ -107,26 +122,78 @@
     </section>
 
     <!-- SKILLS -->
-    <section id="skills" class="section has-bg">
+    <section id="skills" class="section has-bg" data-bot="FastAPI, React, Docker… the full toolkit.">
       <img class="sec-bg" src="images/neural.webp" alt="" aria-hidden="true" width="1600" height="893" loading="lazy" />
       <div class="wrap">
         <div class="sec-head reveal"><span class="mono">02</span><h2>Toolkit</h2><i></i></div>
-        <div class="skills-grid">
-          <article class="skill tilt reveal"><h3>Full-Stack Dev</h3><div><span>AI-Assisted Development</span><span>Rapid Prototyping</span><span>End-to-End Delivery</span></div></article>
-          <article class="skill tilt reveal"><h3>Frontend</h3><div><span>React</span><span>Next.js</span><span>JavaScript</span><span>Responsive UI/UX</span><span>REST Integration</span></div></article>
-          <article class="skill tilt reveal"><h3>Backend</h3><div><span>Python</span><span>FastAPI</span><span>asyncio</span><span>Node.js</span><span>Go</span><span>REST API Design</span></div></article>
-          <article class="skill tilt reveal"><h3>Databases</h3><div><span>PostgreSQL</span><span>MongoDB</span><span>Redis</span></div></article>
-          <article class="skill tilt reveal"><h3>DevOps</h3><div><span>Docker</span><span>GitHub Actions</span><span>Linux (Ubuntu)</span><span>Nginx</span><span>Git / GitHub</span><span>AWS</span></div></article>
-          <article class="skill tilt reveal"><h3>Automation</h3><div><span>n8n Workflows</span><span>Shell Scripting</span><span>Scheduled Pipelines</span></div></article>
-          <article class="skill tilt reveal"><h3>Web Development</h3><div><span>WordPress</span><span>PHP</span><span>Shopify</span><span>3D Web Designs</span><span>Landing Pages</span></div></article>
-          <article class="skill tilt reveal"><h3>QA &amp; Testing</h3><div><span>Postman / pytest</span><span>Test Automation</span><span>Regression</span><span>Defect Tracking</span></div></article>
-          <article class="skill tilt reveal"><h3>Engineering</h3><div><span>System Design</span><span>OOP</span><span>Data Modeling</span><span>Code Reviews</span><span>Agile / Scrum</span></div></article>
+        <div class="skills-grid bento" id="bento">
+
+          <article class="dg-tile reveal" id="stack-diagram">
+            <div class="dg-head">
+              <h3>How my stack fits together</h3>
+              <p class="mono">Hover a node · or a card</p>
+            </div>
+            <svg class="dg" viewBox="0 0 560 380" role="img" aria-label="Architecture: React and Next.js client calls a FastAPI service, which uses Redis with Celery and PostgreSQL or MongoDB, all shipped with Docker, Nginx and GitHub Actions">
+              <defs>
+                <linearGradient id="dgGrad" x1="0" x2="1"><stop offset="0" stop-color="#8296ab"/><stop offset="1" stop-color="#ff6b47"/></linearGradient>
+              </defs>
+
+              <!-- ship & run container -->
+              <g class="dg-node dg-ship" data-key="ship" tabindex="0">
+                <rect class="dg-box" x="8" y="8" width="544" height="364" rx="22" stroke-dasharray="5 7"/>
+                <text class="dg-sub" x="28" y="352">DOCKER · NGINX · GITHUB ACTIONS · AWS</text>
+              </g>
+
+              <!-- links -->
+              <path id="p1" class="dg-link" d="M150 170 H210"/>
+              <path id="p2" class="dg-link" d="M350 160 C385 160 385 100 410 100"/>
+              <path id="p3" class="dg-link" d="M350 180 C385 180 385 260 410 260"/>
+
+              <!-- travelling packets -->
+              <circle class="dg-pkt" r="4"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+              <circle class="dg-pkt" r="4"><animateMotion dur="2.6s" begin="0.4s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+              <circle class="dg-pkt" r="4"><animateMotion dur="2.9s" begin="1s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+
+              <!-- nodes -->
+              <g class="dg-node" data-key="client" tabindex="0">
+                <rect class="dg-box" x="24" y="132" width="126" height="76" rx="16"/>
+                <text class="dg-title" x="87" y="164" text-anchor="middle">Client</text>
+                <text class="dg-sub" x="87" y="184" text-anchor="middle">React · Next.js</text>
+              </g>
+              <g class="dg-node" data-key="api" tabindex="0">
+                <rect class="dg-box" x="210" y="122" width="140" height="96" rx="16"/>
+                <text class="dg-title" x="280" y="160" text-anchor="middle">API</text>
+                <text class="dg-sub" x="280" y="180" text-anchor="middle">FastAPI · Python</text>
+                <text class="dg-sub" x="280" y="196" text-anchor="middle">REST · asyncio</text>
+              </g>
+              <g class="dg-node" data-key="cache" tabindex="0">
+                <rect class="dg-box" x="410" y="62" width="130" height="76" rx="16"/>
+                <text class="dg-title" x="475" y="94" text-anchor="middle">Cache</text>
+                <text class="dg-sub" x="475" y="114" text-anchor="middle">Redis · Celery</text>
+              </g>
+              <g class="dg-node" data-key="data" tabindex="0">
+                <rect class="dg-box" x="410" y="222" width="130" height="76" rx="16"/>
+                <text class="dg-title" x="475" y="254" text-anchor="middle">Data</text>
+                <text class="dg-sub" x="475" y="274" text-anchor="middle">PostgreSQL · MongoDB</text>
+              </g>
+            </svg>
+          </article>
+
+          <article class="skill feature tilt reveal" data-nodes="client api data ship"><span class="mono kicker">Core</span><h3>Full-Stack Dev</h3><div><span>AI-Assisted Development</span><span>Rapid Prototyping</span><span>End-to-End Delivery</span></div></article>
+          <article class="skill tilt reveal" data-nodes="client"><h3>Frontend</h3><div><span>React</span><span>Next.js</span><span>JavaScript</span><span>Responsive UI/UX</span><span>REST Integration</span></div></article>
+          <article class="skill feature wide tilt reveal" data-nodes="api"><span class="mono kicker">Core</span><h3>Backend</h3><div><span>Python</span><span>FastAPI</span><span>asyncio</span><span>Node.js</span><span>Go</span><span>REST API Design</span></div></article>
+          <article class="skill tilt reveal" data-nodes="data cache"><h3>Databases</h3><div><span>PostgreSQL</span><span>MongoDB</span><span>Redis</span></div></article>
+          <article class="skill tilt reveal" data-nodes="ship"><h3>DevOps</h3><div><span>Docker</span><span>GitHub Actions</span><span>Linux (Ubuntu)</span><span>Nginx</span><span>Git / GitHub</span><span>AWS</span></div></article>
+          <article class="skill tilt reveal" data-nodes="ship api"><h3>Automation</h3><div><span>n8n Workflows</span><span>Shell Scripting</span><span>Scheduled Pipelines</span></div></article>
+          <article class="skill tilt reveal" data-nodes="client"><h3>Web Development</h3><div><span>WordPress</span><span>PHP</span><span>Shopify</span><span>3D Web Designs</span><span>Landing Pages</span></div></article>
+          <article class="skill wide tilt reveal" data-nodes="api"><h3>QA &amp; Testing</h3><div><span>Postman / pytest</span><span>Test Automation</span><span>Regression</span><span>Defect Tracking</span></div></article>
+          <article class="skill wide tilt reveal" data-nodes="api data"><h3>Engineering</h3><div><span>System Design</span><span>OOP</span><span>Data Modeling</span><span>Code Reviews</span><span>Agile / Scrum</span></div></article>
         </div>
       </div>
     </section>
 
     <!-- PROJECTS (horizontal pinned scroll) -->
-    <section id="projects" class="h-section">
+    <section id="projects" class="h-section" data-bot="4 full-stack apps shipped. Keep scrolling →">
       <div class="h-pin">
         <div class="h-head wrap">
           <div class="sec-head"><span class="mono">03</span><h2>Selected Work</h2><i></i></div>
@@ -170,10 +237,89 @@
       </div>
     </section>
 
-    <!-- EXPERIENCE -->
-    <section id="experience" class="section">
+    <!-- DESIGN LAB -->
+    <section id="lab" class="section" data-bot="Go on — poke the demos. They're all live.">
       <div class="wrap">
-        <div class="sec-head reveal"><span class="mono">04</span><h2>Journey</h2><i></i></div>
+        <div class="sec-head reveal"><span class="mono">04</span><h2>Design Lab</h2><i></i></div>
+        <p class="lab-intro reveal">Small interface experiments, hand-built for this page. Everything here is live — hover, click and drag.</p>
+        <div class="lab-grid">
+
+          <article class="lab-tile reveal">
+            <div class="lab-stage" id="lab-tilt">
+              <div class="lt-card">
+                <i class="lt-ring"></i><i class="lt-dot"></i>
+                <div class="lt-txt"><small>Layered</small>Depth</div>
+              </div>
+            </div>
+            <div class="lab-cap">
+              <h3>3D depth card</h3>
+              <p>Layers sit at different Z-depths and follow your cursor.</p>
+              <div class="tags"><span>CSS 3D</span><span>GSAP</span></div>
+            </div>
+          </article>
+
+          <article class="lab-tile reveal">
+            <div class="lab-stage" id="lab-mag">
+              <i class="lm-ring"></i><i class="lm-ring r2"></i>
+              <button class="lm-btn" type="button"><span>Hover me</span></button>
+            </div>
+            <div class="lab-cap">
+              <h3>Magnetic button</h3>
+              <p>Pulled toward the cursor, with the label drifting a little further.</p>
+              <div class="tags"><span>GSAP quickTo</span><span>Pointer events</span></div>
+            </div>
+          </article>
+
+          <article class="lab-tile reveal">
+            <div class="lab-stage">
+              <div class="ls-text" id="lab-scramble" role="button" tabindex="0" aria-label="Cycle the headline">Design × Code</div>
+              <p class="ls-hint mono">Click or hover</p>
+            </div>
+            <div class="lab-cap">
+              <h3>Text scramble</h3>
+              <p>Characters resolve frame by frame into the next phrase.</p>
+              <div class="tags"><span>requestAnimationFrame</span><span>Typography</span></div>
+            </div>
+          </article>
+
+          <article class="lab-tile reveal">
+            <div class="lab-stage" id="lab-spot">
+              <div class="lsp-base" aria-hidden="true">SEE WHAT'S<br />HIDDEN</div>
+              <div class="lsp-reveal" aria-hidden="true">SEE WHAT'S<br />HIDDEN</div>
+            </div>
+            <div class="lab-cap">
+              <h3>Cursor spotlight</h3>
+              <p>A radial mask reveals a second layer underneath.</p>
+              <div class="tags"><span>CSS mask</span><span>Custom properties</span></div>
+            </div>
+          </article>
+
+          <article class="lab-tile wide reveal">
+            <div class="lab-stage" id="lab-par">
+              <div class="lpar-layer l1" data-depth="0.4"></div>
+              <div class="lpar-layer l2" data-depth="0.8"></div>
+              <div class="lpar-layer l3" data-depth="1.4"><i class="sh sh1"></i><i class="sh sh2"></i><i class="sh sh3"></i></div>
+              <span class="chip" style="left:12%;top:24%">React</span>
+              <span class="chip" style="left:52%;top:58%">FastAPI</span>
+              <span class="chip" style="left:72%;top:20%">Docker</span>
+              <span class="chip" style="left:30%;top:70%">PostgreSQL</span>
+              <p class="ls-hint mono">Drag the chips · move your cursor</p>
+            </div>
+            <div class="lab-cap">
+              <h3>Parallax &amp; drag</h3>
+              <p>Three depth layers shift with the cursor while the stack chips can be dragged around the scene.</p>
+              <div class="tags"><span>Parallax</span><span>Pointer drag</span><span>Bounds clamping</span></div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section" data-bot="From trainee to software engineer.">
+      <div class="wrap">
+        <div class="sec-head reveal"><span class="mono">05</span><h2>Journey</h2><i></i></div>
         <div class="timeline" id="timeline">
           <div class="tl-line"><i id="tl-fill"></i></div>
 
@@ -221,11 +367,10 @@
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="section">
+    <section id="contact" class="section" data-bot="Let's build something great together!">
       <img class="contact-hand" src="images/hand.webp" alt="" aria-hidden="true" width="1100" height="1100" loading="lazy" />
-      <img class="mascot" src="images/mascot.webp" alt="Friendly AI robot mascot" width="700" height="700" loading="lazy" />
       <div class="wrap">
-        <p class="mono reveal contact-kicker">05 — Contact</p>
+        <p class="mono reveal contact-kicker">06 — Contact</p>
         <h2 class="contact-title reveal">Let's build<br /><span class="grad">something</span><br />great.</h2>
         <div class="contact-row reveal">
           <a href="mailto:ranjithpalani16@gmail.com" class="btn btn-primary big magnetic" data-cursor><span>ranjithpalani16@gmail.com</span><em>↗</em></a>
@@ -239,6 +384,20 @@
       <footer class="mono">© 2026 Ranjith P · Tamil Nadu, India · Built with Three.js &amp; GSAP</footer>
     </section>
   </main>
+
+  <!-- AI SIDEKICK -->
+  <div class="bot" id="bot" data-cursor role="button" tabindex="0" aria-label="AI sidekick — click to chat">
+    <div class="bot-bubble" id="bot-bubble" aria-live="polite"></div>
+    <div class="bot-hop">
+      <div class="bot-float">
+        <div class="bot-body" id="bot-body">
+          <img src="images/mascot.webp" alt="" width="700" height="700" />
+          <i class="bot-patch"></i>
+          <i class="bot-eye" style="left:49.9%"></i><i class="bot-eye" style="left:58.9%"></i>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
