@@ -672,36 +672,17 @@
     });
   }
 
-  // Timeline progress + cards
-  const tl = $('#timeline');
-  if (tl) {
-    gsap.to('#tl-fill', {
-      scaleY: 1, ease: 'none',
-      scrollTrigger: { trigger: tl, start: 'top 70%', end: 'bottom 70%', scrub: true }
-    });
-    $$('.tl-item').forEach(item => {
-      gsap.from(item.querySelector('.tl-card'), {
-        x: 60, opacity: 0, duration: 1.1, ease: 'expo.out',
-        scrollTrigger: { trigger: item, start: 'top 82%' }
-      });
-      gsap.from(item.querySelector('.tl-dot'), {
-        scale: 0, duration: 0.7, ease: 'back.out(3)',
-        scrollTrigger: { trigger: item, start: 'top 82%' }
-      });
-    });
-  }
-
-  // Journey: the sticky left panel follows whichever role is in focus
-  const jrItems = $$('.tl-item');
+  // Journey: the sticky left panel + year wheel follow the active role.
+  // Desktop shows ONE card at a time (the others are hidden); tablet/mobile keep the stacked list.
+  const jr = $('#jr'), jrStick = $('.jr-stick'), jrItems = $$('.tl-item');
   const jrPanes = $$('.jr-pane'), jrSteps = $$('.jr-step');
-  if (jrItems.length && jrPanes.length) {
+  if (jr && jrStick && jrItems.length && jrPanes.length) {
+    const N = jrItems.length;
     const setActive = i => {
       jrPanes.forEach((p, k) => p.classList.toggle('is-on', k === i));
       jrSteps.forEach((s, k) => s.classList.toggle('is-on', k === i));
       jrItems.forEach((it, k) => it.classList.toggle('is-active', k === i));
     };
-    // Pick the card whose centre is nearest the middle of the viewport. Reads live
-    // positions on scroll, so it stays correct however the pinned section above shifts layout.
     // Year wheel: a big clock-style arc around the panel, years where the numbers would be.
     // It turns as you scroll so the current year always sits at 3 o'clock, beside the card.
     const wheel = $('#jr-wheel'), side = wheel && wheel.parentElement;
@@ -768,32 +749,67 @@
     let wTimer;
     addEventListener('resize', () => { clearTimeout(wTimer); wTimer = setTimeout(() => { buildWheel(); paintWheel(); }, 150); });
 
-    let jrCur = -1, jrRaf = 0;
-    const pickActive = () => {
-      jrRaf = 0;
-      const mid = innerHeight * 0.55;
-      const first = jrItems[0].getBoundingClientRect(), last = jrItems[jrItems.length - 1].getBoundingClientRect();
-      if (first.top > innerHeight || last.bottom < 0) return;
-      const rects = jrItems.map(it => it.getBoundingClientRect());
-      let best = 0, bestD = Infinity;
-      rects.forEach((r, i) => {
-        const d = mid >= r.top && mid <= r.bottom ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
-        if (d < bestD) { bestD = d; best = i; }
+
+    const mmJ = gsap.matchMedia();
+
+    // tablet / mobile: original stacked cards with scroll reveals
+    mmJ.add('(max-width: 980px)', () => {
+      gsap.to('#tl-fill', {
+        scaleY: 1, ease: 'none',
+        scrollTrigger: { trigger: '#timeline', start: 'top 70%', end: 'bottom 70%', scrub: true }
       });
-      if (best !== jrCur) { jrCur = best; setActive(best); }
-      // continuous position between card centres drives the dial hand
-      const cs = rects.map(r => r.top + r.height / 2);
-      let f;
-      if (mid <= cs[0]) f = 0;
-      else if (mid >= cs[cs.length - 1]) f = cs.length - 1;
-      else { const i = cs.findIndex((c, k) => mid >= c && mid < cs[k + 1]); f = i + (mid - cs[i]) / (cs[i + 1] - cs[i]); }
-      moveWheel(f);
-    };
-    const queuePick = () => { if (!jrRaf) jrRaf = requestAnimationFrame(pickActive); };
-    addEventListener('scroll', queuePick, { passive: true });
-    addEventListener('resize', queuePick);
-    queuePick();
-    jrSteps.forEach((s, i) => s.addEventListener('click', () => jrItems[i].scrollIntoView({ behavior: 'smooth', block: 'center' })));
+      jrItems.forEach(item => {
+        gsap.from(item.querySelector('.tl-card'), { x: 60, opacity: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: item, start: 'top 82%' } });
+        gsap.from(item.querySelector('.tl-dot'), { scale: 0, duration: 0.7, ease: 'back.out(3)', scrollTrigger: { trigger: item, start: 'top 82%' } });
+      });
+    });
+
+    // desktop: scroll steps through the roles, one card visible at a time
+    mmJ.add('(min-width: 981px)', () => {
+      jr.classList.add('is-stepper');
+      jr.style.setProperty('--jr-n', N);
+      buildWheel(); paintWheel();
+      let cur = -1, raf = 0;
+      const geo = () => {
+        const r = jr.getBoundingClientRect();
+        const top = parseFloat(getComputedStyle(jrStick).top) || 0;
+        return { r, top, range: Math.max(1, r.height - jrStick.offsetHeight) };
+      };
+      const show = (i, dir, animate) => {
+        jrItems.forEach((it, k) => { it.classList.toggle('is-hidden', k !== i); it.setAttribute('aria-hidden', k !== i ? 'true' : 'false'); });
+        if (!animate) return;
+        const it = jrItems[i];
+        gsap.fromTo($('.tl-card', it), { x: 60 * dir, opacity: 0 }, { x: 0, opacity: 1, duration: 0.9, ease: 'expo.out', overwrite: 'auto' });
+        gsap.fromTo($('.tl-dot', it), { scale: 0 }, { scale: 1, duration: 0.6, ease: 'back.out(3)', overwrite: 'auto' });
+      };
+      const update = () => {
+        raf = 0;
+        const { r, top, range } = geo();
+        const p = Math.min(1, Math.max(0, (top - r.top) / range));
+        const idx = Math.min(N - 1, Math.floor(p * N));
+        gsap.set('#tl-fill', { scaleY: p });
+        moveWheel(Math.min(N - 1, Math.max(0, p * N - 0.5)));
+        if (idx !== cur) {
+          const dir = idx > cur ? 1 : -1, first = cur === -1;
+          cur = idx; setActive(idx); show(idx, dir, !first);
+        }
+      };
+      const queue = () => { if (!raf) raf = requestAnimationFrame(update); };
+      addEventListener('scroll', queue, { passive: true });
+      addEventListener('resize', queue);
+      jrSteps.forEach((s, i) => { s.onclick = () => {
+        const { r, top, range } = geo();
+        scrollTo({ top: scrollY + r.top - top + ((i + 0.5) / N) * range, behavior: 'smooth' });
+      }; });
+      update();
+      return () => {
+        removeEventListener('scroll', queue); removeEventListener('resize', queue);
+        jrSteps.forEach(s => { s.onclick = null; });
+        jr.classList.remove('is-stepper'); jr.style.removeProperty('--jr-n');
+        jrItems.forEach(it => { it.classList.remove('is-hidden'); it.removeAttribute('aria-hidden'); });
+        gsap.set('#tl-fill', { clearProps: 'transform' });
+      };
+    });
   }
 
   // Section headline lines grow
