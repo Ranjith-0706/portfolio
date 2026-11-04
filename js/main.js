@@ -702,19 +702,49 @@
     };
     // Pick the card whose centre is nearest the middle of the viewport. Reads live
     // positions on scroll, so it stays correct however the pinned section above shifts layout.
+    // Year dial: the hand sweeps clockwise from the newest year to the oldest as you scroll
+    const dial = $('#jr-dial'), hand = $('#dl-hand'), arc = $('#dl-arc');
+    const dMax = dial ? +dial.dataset.max : 0, dMin = dial ? +dial.dataset.min : 0;
+    const stepDeg = dial ? 360 / (dMax - dMin + 1) : 0;
+    const yrs = jrPanes.map(p => +p.querySelector('.jr-year b').textContent);
+    const yrLabels = dial ? $$('.dl-yr', dial) : [];
+    const dialState = { a: 0 };
+    let dialYear = -1;
+    const paintDial = () => {
+      gsap.set(hand, { rotation: dialState.a, svgOrigin: '100 100' });
+      arc.style.strokeDashoffset = 527.8 * (1 - Math.min(dialState.a, 360) / 360);
+      const yr = Math.round(dMax - dialState.a / stepDeg);
+      if (yr !== dialYear) { dialYear = yr; yrLabels.forEach(l => l.classList.toggle('on', +l.dataset.yr === yr)); }
+    };
+    const moveDial = f => {
+      if (!dial) return;
+      const i = Math.min(yrs.length - 2, Math.max(0, Math.floor(f)));
+      const t = Math.min(1, Math.max(0, f - i));
+      const yr = yrs[i] + (yrs[i + 1] - yrs[i]) * t;
+      gsap.to(dialState, { a: (dMax - yr) * stepDeg, duration: 0.6, ease: 'power3.out', overwrite: true, onUpdate: paintDial });
+    };
+    paintDial();
+
     let jrCur = -1, jrRaf = 0;
     const pickActive = () => {
       jrRaf = 0;
       const mid = innerHeight * 0.55;
       const first = jrItems[0].getBoundingClientRect(), last = jrItems[jrItems.length - 1].getBoundingClientRect();
       if (first.top > innerHeight || last.bottom < 0) return;
+      const rects = jrItems.map(it => it.getBoundingClientRect());
       let best = 0, bestD = Infinity;
-      jrItems.forEach((it, i) => {
-        const r = it.getBoundingClientRect();
+      rects.forEach((r, i) => {
         const d = mid >= r.top && mid <= r.bottom ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
         if (d < bestD) { bestD = d; best = i; }
       });
       if (best !== jrCur) { jrCur = best; setActive(best); }
+      // continuous position between card centres drives the dial hand
+      const cs = rects.map(r => r.top + r.height / 2);
+      let f;
+      if (mid <= cs[0]) f = 0;
+      else if (mid >= cs[cs.length - 1]) f = cs.length - 1;
+      else { const i = cs.findIndex((c, k) => mid >= c && mid < cs[k + 1]); f = i + (mid - cs[i]) / (cs[i + 1] - cs[i]); }
+      moveDial(f);
     };
     const queuePick = () => { if (!jrRaf) jrRaf = requestAnimationFrame(pickActive); };
     addEventListener('scroll', queuePick, { passive: true });
